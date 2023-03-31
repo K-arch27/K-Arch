@@ -126,9 +126,9 @@ function loginshell() {
         break
       else
         zenity --error --text="Please choose your login shell again." --title="shell Selection Error"
+        loginshell
       fi
     done
-  fi
 }
 
 
