@@ -55,8 +55,8 @@ fi
 
 
 # use chpasswd to enter $USERNAME:$password
-echo "$USERNAME:$PASSWORD" | chpasswd
-echo "root:$ROOTPASSWORD" | chpasswd
+echo "$USERNAME:$PASSWORD" | chpasswd -e
+echo "root:$ROOTPASSWORD" | chpasswd -e
 
 mkinitcpio -P
 
