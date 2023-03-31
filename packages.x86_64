@@ -81,7 +81,7 @@ nilfs-utils
 nmap
 ntfs-3g
 nvme-cli
-NetworkManager
+networkmanager
 open-iscsi
 open-vm-tools
 openconnect
