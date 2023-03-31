@@ -208,7 +208,7 @@ password=$(zenity --password --title "Enter User Password" 2>/dev/null)
 password2=$(zenity --password --title "Repeat User Password" 2>/dev/null)
 
   if [ "$password" = "$password2" ]; then
-    hashed_password=$(echo "$password" | passwd dummy --stdin )
+    hashed_password=$(echo "$password" | sha256sum | awk '{print $1}')
     set_option PASSWORD "${hashed_password}"
     break
   else
@@ -227,7 +227,7 @@ rootpassword2=$(zenity --password --title "Repeat Root Password" 2>/dev/null)
 
 
   if [ "$rootpassword" = "$rootpassword2" ]; then
-    hashed_rootpassword=$(echo "$rootpassword" | passwd dummy --stdin )
+    hashed_rootpassword=$(echo "$rootpassword" | sha256sum | awk '{print $1}')
     set_option ROOTPASSWORD "${hashed_rootpassword}"
     break
   else
