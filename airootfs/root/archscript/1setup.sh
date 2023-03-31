@@ -117,20 +117,18 @@ function keymap() {
 function loginshell() {
     # Define available options
     options=("bash" "fish" "zsh")
-
-    # Display Zenity dialog to select an option
-    shellchoice=$(zenity --list --title="Select Login Shell" --text="Select Your login shell (root will still use bash)" --column="Shell" "${options[@]}")
-    zenity --question --text="Your login shell choice: ${shellchoice}. Is this correct?" --title="Shell Confirmation"
-      if [ $? = 0 ]; then
-        set_option SHELLCHOICE $shellchoice
-        break
-      else
-        zenity --error --text="Please choose your login shell again." --title="shell Selection Error"
-        loginshell
-      fi
+    shellchoice=$(zenity --list --title="Login Shell" --text="Please select a Login Shell" --column="shells" "${options[@]}")
+    confirmed=0
+    while [ $confirmed -eq 0 ]; do
+        zenity --question --text="You have selected '$shellchoice'. Are you sure?" --title="Confirmation"
+        if [ $? -eq 0 ]; then
+            confirmed=1
+        else
+            loginshell
+        fi
     done
+    set_option SHELLCHOICE $shellchoice
 }
-
 
 
 
