@@ -1,0 +1,3 @@
+
+konsole --noclose -e /root/archscript/start.sh &
+
