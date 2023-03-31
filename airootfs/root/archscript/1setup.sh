@@ -120,19 +120,17 @@ function loginshell() {
 
     # Display Zenity dialog to select an option
     shellchoice=$(zenity --list --title="Select Login Shell" --text="Select Your login shell (root will still use bash)" --column="Shell" "${options[@]}")
-
-    # Check if the user confirmed the selection
-    confirmed=$(zenity --question \
-        --title="Confirm Login Shell" \
-        --text="Your shell: ${shellchoice}\n Is this correct?")
-
-    # Handle user's confirmation
-    if [[ $confirmed == "True" ]]; then
+    zenity --question --text="Your login shell choice: ${shellchoice}. Is this correct?" --title="Shell Confirmation"
+      if [ $? = 0 ]; then
         set_option SHELLCHOICE $shellchoice
-    else
-        loginshell
-    fi
+        break
+      else
+        zenity --error --text="Please choose your login shell again." --title="shell Selection Error"
+      fi
+    done
+  fi
 }
+
 
 
 
