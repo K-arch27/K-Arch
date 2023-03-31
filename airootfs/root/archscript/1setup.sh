@@ -89,7 +89,6 @@ function keymap() {
     else
        keymap
     fi
-  done
 }
 
 
