@@ -42,6 +42,15 @@
     </action>
   </item>
 
+        <item label="File Explorer">
+    <action name="Execute">
+      <command>thunar</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+    
 </menu>
 
 <menu id="root-menu" label="Openbox 3">
