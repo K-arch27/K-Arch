@@ -132,6 +132,19 @@ function loginshell() {
 
 
 
+function desktopenv () {
+    options=(kaidaplasma fullplasma minimalplasma gnome fullgnome xfce fullxfce fullMATE MATE cinnamon fulldeepin deepin lxqt i3gaps xmonad openbox bspwm none)
+    dechoice=$(zenity --list --title="Select Desktop Environment" --text="Please select an environment from this list" --column="Options" "${options[@]}")
+    
+    if zenity --question --title="Confirmation" --text="Your environment: ${dechoice}. Is this correct?" --ok-label="Yes" --cancel-label="No"; then
+        set_option DECHOICE $dechoice
+    else
+        clear; desktopenv
+    fi
+}
+
+
+
 function kernelselect () {
   # Prompt user to select a kernel
   options=(linux linux-zen linux-hardened linux-lts)
