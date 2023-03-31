@@ -5,6 +5,7 @@
 # user name, password, etc.
 
 
+
 if [ -d /sys/firmware/efi ]; then
   FIRMWARE_TYPE="UEFI"
 else
@@ -12,9 +13,11 @@ else
 fi
 
 
+
 # set up a config file
 CONFIG_FILE=/root/archscript/config.sh
 source /root/archscript/config.sh
+
 
 
 function partition_check {
@@ -26,6 +29,7 @@ function partition_check {
         while pgrep gparted >/dev/null; do sleep 1; done
     fi
 }
+
 
 
 function timezone() {
@@ -53,6 +57,7 @@ function timezone() {
 }
 
 
+
 function localeselect() {
   # Get a list of available locales
   options=($(locale -a))
@@ -75,6 +80,7 @@ function localeselect() {
     done
   fi
 }
+
 
 
 function keymap() {
@@ -107,6 +113,7 @@ function keymap() {
 }
 
 
+
 function loginshell() {
     # Define available options
     options=("bash" "fish" "zsh")
@@ -126,7 +133,6 @@ function loginshell() {
         loginshell
     fi
 }
-
 
 
 
@@ -156,6 +162,7 @@ function kernelselect () {
 }
 
 
+
 function lib32repo () {
   libchoice=$(zenity --list --text "Do you want the Multilib repo?" --column "Options" "yes" "no")
 
@@ -176,6 +183,7 @@ function lib32repo () {
 }
 
 
+
 function AurHelper () {
     aurchoice=$(zenity --list --title="AUR Helper" --text="Please select an aur helper from this list" --column="Options" "none" "yay" "paru" "octopi-paru" "octopi-yay")
     
@@ -188,6 +196,7 @@ function AurHelper () {
         AurHelper
     fi
 }
+
 
 
 function chaorepo () {
@@ -204,6 +213,7 @@ function chaorepo () {
 }
 
 
+
 function blackarch () {
     blackchoice=$(zenity --list --title="BlackArch Repo" --text="Do you want the BlackArch repo ?" --column="Options" "no" "yes")
     
@@ -216,8 +226,6 @@ function blackarch () {
         blackarch
     fi
 }
-
-
 
 
 
@@ -265,6 +273,7 @@ set_option ROOTPASSWORD "${hashed_rootpassword}"
 }
 
 
+
 function myhostname() {
   while true; do
     hostname=$(zenity --entry --text="Please enter your hostname:" --title="Hostname" 2>/dev/null)
@@ -304,6 +313,7 @@ function efiformat () {
 }
 
 
+
 function swappartition() {
     
 
@@ -341,9 +351,6 @@ function swappartition() {
 
 
 
-
-
-
 function homefinal () {
 clear
 logo
@@ -352,6 +359,7 @@ set_option HOMESNAP "no"
 uuid5=$(blkid -o value -s UUID $partition5)
 set_option HOMEUUID $uuid5
 }
+
 
 
 function homeformat() {
@@ -377,6 +385,7 @@ function homeformat() {
             ;;
     esac
 }
+
 
 
 function homepartition2() {
@@ -418,6 +427,7 @@ function homepartition2() {
 }
 
 
+
 function homesnapchoice() {
     # Ask user whether to include /Home in snapshot
     zenity --question --title "Home Snapshot Choice" --text "Do you want /Home to be included inside snapshot?\nBe aware that doing so might result in lost data when rolling the system back to a previous state."
@@ -429,6 +439,7 @@ function homesnapchoice() {
 
     set_option HOMESNAP $homesnap
 }
+
 
 
 function homepartition() {
@@ -443,6 +454,7 @@ function homepartition() {
         homesnapchoice
     fi
 }
+
 
 
 function efipartition() {
@@ -466,6 +478,7 @@ function efipartition() {
 }
 
 
+
 function rootpartition() {
 
     # Create a list of options using available partitions
@@ -486,8 +499,6 @@ function rootpartition() {
     uuid3=$(blkid -o value -s UUID $partition3)
     set_option ROOTUUID $uuid3
 }
-
-
 
 
 
