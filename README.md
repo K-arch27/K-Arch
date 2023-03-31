@@ -4,8 +4,7 @@
 
 --
 
-Use archiso to build 
-mkarchio /this/repo/directory
+Use ./build.sh to build the Iso
 
 --
 
