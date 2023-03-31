@@ -276,37 +276,40 @@ function efiformat () {
 
 function swappartition() {
     
+    # Ask user if they have a Swap partition
+    if zenity --question --text="Do you have a Swap partition?"; then
+        swappartition2
+    else
+        zenity --info --text="No Swap partition will be used." 2>/dev/null
+    fi
+}
 
-    # Create a list of options using available partitions
-    options=()
-    for partition in $partitions; do
-        options+=("$partition")
-    done
 
-    # Ask user to choose a partition
-    choice=$(zenity --list --text="Do you have a Swap partition?" --radiolist --column "Select" --column "Option" \
-    TRUE "Yes" \
-    FALSE "No" "${options[@]}" 2>/dev/null)
-    
-    case $choice in
-    "Yes")
+
+
+function swappartition2() {
+
         # Ask user to select Swap partition
+        # Create a list of options using available partitions
+        options=()
+        for partition in $partitions; do
+            options+=("$partition")
+        done
         partition4=$(zenity --list --title="Select SWAP partition" --text="Please select your SWAP partition:" --column "Partitions" "${options[@]}" 2>/dev/null)
-        if [[ -z "$partition4" ]]; then
-            zenity --error --text "No partition selected."
-            return 1
-        fi
-
-        set_option SWAPPART "$partition4"
-        mkswap "$partition4"
-        uuid4=$(blkid -o value -s UUID "$partition4")
-        set_option SWAPUUID "$uuid4";;
-    "No")
-        zenity --info --text="No Swap partition will be used." 2>/dev/null;;
-    *)
-        zenity --error --text="Invalid option. Please try again." 2>/dev/null
-        zen_swappartition;;
-    esac
+            
+            if zenity --question --text="Your Swap is ${partition4}. Is this correct?" --title="Confirmation" 2>/dev/null ; then
+                set_option SWAPPART "$partition4"
+                mkswap "$partition4"
+                uuid4=$(blkid -o value -s UUID "$partition4")
+                set_option SWAPUUID "$uuid4"
+            else   
+                swappartition
+            fi
+            
+            if [[ -z "$partition4" ]]; then
+                zenity --error --text "No partition selected."
+                swappartition
+            fi
 }
 
 
@@ -322,28 +325,17 @@ set_option HOMEUUID $uuid5
 
 
 
-function homeformat() {
-    # Choice for Home Filesystem
-    choice=$(zenity --list \
-        --title="Home Filesystem" \
-        --text="Do you want Btrfs or Ext4 for Home?" \
-        --column="Filesystem" "Btrfs" "Ext4" \
-        --width=250 --height=150 --hide-header --hide-scrollbar 2>/dev/null)
 
-    case $choice in
-        "Btrfs")
-            mkfs.btrfs -L HOME -m single -f "$partition5"
-            homefinal
-            ;;
-        "Ext4")
-            mkfs.ext4 -L HOME "$partition5"
-            homefinal
-            ;;
-        *)
-            echo "Wrong option. Try again"
-            homeformat
-            ;;
-    esac
+
+function homeformat() {
+    # Ask user if they want Btrfs or Ext4 for Home
+    if zenity --question --text="Do you want to format Home with Btrfs? Click 'Yes' for Btrfs, 'No' for Ext4."; then
+        mkfs.btrfs -L HOME -m single -f "$partition5"
+        homefinal
+    else
+        mkfs.ext4 -L HOME "$partition5"
+        homefinal
+    fi
 }
 
 
@@ -357,45 +349,32 @@ function homepartition2() {
         options+=("$partition")
     done
 
-    # Ask user to choose a partition
-    partition5=$(zenity --list --title "Choose Home Partition" --text "Choose a Home partition to use:" --column "Partitions" "${options[@]}" 2>/dev/null)
-    if [[ -z "$partition5" ]]; then
-        zenity --error --text "No partition selected."
-        return 1
-    fi
-
-    # Ask user whether to format Home or not
-    zenity --question --text "Do you want to format Home?"
-    if [[ $? -eq 0 ]]; then
-        # If user chooses to format, ask for filesystem type
-        zenity --question --text "Do you want Btrfs or Ext4 for Home?"
-        if [[ $? -eq 0 ]]; then
-            # If user chooses Btrfs, format with Btrfs
-            mkfs.btrfs -L HOME -m single -f ${partition5}
-            homefinal
-        else
-            # If user chooses Ext4, format with Ext4
-            mkfs.ext4 -L HOME ${partition5}
-            homefinal
+        # Ask user to choose a partition
+        partition5=$(zenity --list --title "Choose Home Partition" --text "Choose a Home partition to use:" --column "Partitions" "${options[@]}" 2>/dev/null)
+        if [[ -z "$partition5" ]]; then
+            zenity --error --text "No partition selected."
+            return 1
         fi
-    else
-        # If user chooses not to format, use partition as is
-        echo "Home Partition is gonna be used as is"
-        read -p "Press any key to resume"
-        homefinal
-    fi
+
+      # Ask user whether to format Home or not
+      if zenity --question --text "Do you want to format Home?"; then
+          homeformat
+      else
+          homefinal
+      fi
+
+    
 }
 
 
 
 function homesnapchoice() {
     # Ask user whether to include /Home in snapshot
-    zenity --question --title "Home Snapshot Choice" --text "Do you want /Home to be included inside snapshot?\nBe aware that doing so might result in lost data when rolling the system back to a previous state."
-    if [[ $? -eq 0 ]]; then
+        if zenity --question --title "Home Snapshot Choice" --text "Do you want /Home to be included inside snapshot?\nBe aware that doing so might result in lost data when rolling the system back to a previous state."; then
         homesnap="yes"
-    else
+        else
         homesnap="no"
-    fi
+        fi
 
     set_option HOMESNAP $homesnap
 }
@@ -404,10 +383,8 @@ function homesnapchoice() {
 
 function homepartition() {
     # Ask user if they want a separate Home partition
-    zenity --question --text "Do you want a separate Home partition? (Doing so prevents Home from being included in a snapshot)"
-    if [[ $? -eq 0 ]]; then
-        # If user chooses Yes, call the homepartition2 function
-        homepartition2
+    if zenity --question --text "Do you want a separate Home partition? (Doing so prevents Home from being included in a snapshot)"; then
+      homepartition2
     else
         # If user chooses No, set HOMEPART to "no" and call homesnapchoice function
         set_option HOMEPART "no"
@@ -430,7 +407,7 @@ function efipartition() {
     partition2=$(zenity --list --title "Choose EFI Partition" --text "Choose an EFI partition to use:" --column "Partitions" "${options[@]}" 2>/dev/null)
     if [[ -z "$partition2" ]]; then
         zenity --error --text "No partition selected."
-        return 1
+        efipartition
     fi
 
     # Set the selected partition as the value of the EFIPART option
@@ -451,7 +428,7 @@ function rootpartition() {
     partition3=$(zenity --list --title "Choose Root Partition" --text "Choose a Root partition to use:" --column "Partitions" "${options[@]}" 2>/dev/null)
     if [[ -z "$partition3" ]]; then
         zenity --error --text "No partition selected."
-        return 1
+        roorpartition
     fi
 
     set_option ROOTPART "$partition3"
