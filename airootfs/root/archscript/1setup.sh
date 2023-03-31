@@ -15,7 +15,7 @@ function partition_check {
 
     partition_check
     # Check for available partitions
-    partitions=$(lsblk -o NAME,SIZE -p -n -l -d | grep -vE "/|^\s*loop" | awk '{print $1}')
+    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
 
     # If no partitions are found, return error
     if [[ -z "$partitions" ]]; then
