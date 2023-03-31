@@ -1,10 +1,15 @@
-#!/usr/bin/env bash
-
 #!/bin/bash
 
 # This script will ask users about their prefrences
 # like timezone, keyboard layout,
 # user name, password, etc.
+
+
+if [ -d /sys/firmware/efi ]; then
+  FIRMWARE_TYPE="UEFI"
+else
+  FIRMWARE_TYPE="BIOS"
+fi
 
 
 # set up a config file
