@@ -232,9 +232,9 @@ function blackarch () {
 function userinfo () {
 
 while true; do
-  username=$(zenity --entry --text="Enter the text:" 2>/dev/null)
+  username=$(zenity --entry --text="Choose A Username:" 2>/dev/null)
   if [[ ! "$username" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
-    echo "Invalid username. Usernames must start with a letter or underscore, and only contain letters, digits, hyphens, and underscores."
+   zenity --error --text "Invalid username. Usernames must start with a letter or underscore, and only contain letters, digits, hyphens, and underscores."
   else
     break
   fi
@@ -242,14 +242,14 @@ done
 
 while true; do
 
-password=$(zenity --password --title "Enter Root Password" --hide-text 2>/dev/null)
-password2=$(zenity --password --title "Repeat Root Password" --hide-text 2>/dev/null)
+password=$(zenity --password --title "Enter User Password" --hide-text 2>/dev/null)
+password2=$(zenity --password --title "Repeat User Password" --hide-text 2>/dev/null)
 
   if [ "$password" = "$password2" ]; then
     hashed_password=$(echo "$password" | sha256sum | awk '{print $1}')
     break
   else
-    echo -e "\nPasswords do not match. Please try again. \n"
+    zenity --error --text "Passwords do not match. Please try again."
   fi
 done
 
@@ -263,7 +263,7 @@ rootpassword2=$(zenity --password --title "Repeat Root Password" --hide-text 2>/
     hashed_rootpassword=$(echo "$rootpassword" | sha256sum | awk '{print $1}')
     break
   else
-    echo -e "\nPasswords do not match. Please try again. \n"
+    zenity --error --text "Passwords do not match. Please try again."
   fi
 done
 
@@ -299,7 +299,7 @@ function efiformat () {
 
     # choice for formatting the EFI partition
     if zenity --question --text="Do you want to format the EFI partition ${partition2}?\nChoose 'No' if it's already used by another system or 'Yes' if it's a new partition."; then
-        echo "EFI partition will be formatted."
+        zenity --warning --text "EFI partition will be formatted."
         mkfs.vfat -F32 ${partition2}
         uuid2=$(blkid -o value -s UUID $partition2)
         set_option EFIUUID $uuid2
