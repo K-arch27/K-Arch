@@ -204,8 +204,8 @@ function userpass () {
 
 while true; do
 
-password=$(zenity --password --title "Enter User Password" --hide-text 2>/dev/null)
-password2=$(zenity --password --title "Repeat User Password" --hide-text 2>/dev/null)
+password=$(zenity --password --title "Enter User Password" 2>/dev/null)
+password2=$(zenity --password --title "Repeat User Password" 2>/dev/null)
 
   if [ "$password" = "$password2" ]; then
     hashed_password=$(echo "$password" | sha256sum | awk '{print $1}')
@@ -222,8 +222,8 @@ function rootpass () {
 
 while true; do
 
-rootpassword=$(zenity --password --title "Enter Root Password" --hide-text 2>/dev/null)
-rootpassword2=$(zenity --password --title "Repeat Root Password" --hide-text 2>/dev/null)
+rootpassword=$(zenity --password --title "Enter Root Password" 2>/dev/null)
+rootpassword2=$(zenity --password --title "Repeat Root Password" 2>/dev/null)
 
 
   if [ "$rootpassword" = "$rootpassword2" ]; then
