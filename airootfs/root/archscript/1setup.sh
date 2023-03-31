@@ -236,9 +236,15 @@ while true; do
   if [[ ! "$username" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
    zenity --error --text "Invalid username. Usernames must start with a letter or underscore, and only contain letters, digits, hyphens, and underscores."
   else
+    set_option USERNAME "${username}"
     break
   fi
 done
+
+}
+
+
+function userpass () {
 
 while true; do
 
@@ -247,11 +253,16 @@ password2=$(zenity --password --title "Repeat User Password" --hide-text 2>/dev/
 
   if [ "$password" = "$password2" ]; then
     hashed_password=$(echo "$password" | sha256sum | awk '{print $1}')
+    set_option PASSWORD "${hashed_password}"
     break
   else
     zenity --error --text "Passwords do not match. Please try again."
   fi
 done
+}
+
+
+function rootpass () {
 
 while true; do
 
@@ -261,15 +272,13 @@ rootpassword2=$(zenity --password --title "Repeat Root Password" --hide-text 2>/
 
   if [ "$rootpassword" = "$rootpassword2" ]; then
     hashed_rootpassword=$(echo "$rootpassword" | sha256sum | awk '{print $1}')
+    set_option ROOTPASSWORD "${hashed_rootpassword}"
     break
   else
     zenity --error --text "Passwords do not match. Please try again."
   fi
 done
 
-set_option USERNAME "${username}"
-set_option PASSWORD "${hashed_password}"
-set_option ROOTPASSWORD "${hashed_rootpassword}"
 }
 
 
@@ -514,6 +523,8 @@ function rootpartition() {
     reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
     keymap
     userinfo
+    userpass
+    rootpass
     myhostname
     timezone
     localeselect
