@@ -69,15 +69,7 @@ function localeselect() {
   if zenity --question --text="Your locale: ${locale}. Is this correct?" --title="Locale Confirmation"; then
     set_option LANGLOCAL $locale
   else
-    while true; do
-      locale=$(zenity --list --text="Please choose your locale again:" --title="Locale Selection" --column="Locale" "${options[@]}")
-      if zenity --question --text="Your locale: ${locale}. Is this correct?" --title="Locale Confirmation"; then
-        set_option LANGLOCAL $locale
-        break
-      else
-        zenity --error --text="Please choose your locale again." --title="Locale Selection Error"
-      fi
-    done
+  localeselect
   fi
 }
 
@@ -87,29 +79,17 @@ function keymap() {
   # These are default key maps as presented in official arch repo archinstall
   options=(by ca cf cz de dk es et fa fi fr gr hu il it lt lv mk nl no pl ro ru sg ua uk us)
 
-  # Zenity prompt to select keymap
-  keymap=$(zenity --list --text="Please select your keyboard layout from this list:" --title="Keymap Selection" --column="Keymap" "${options[@]}")
+    # Zenity prompt to select keymap
+    keymap=$(zenity --list --text="Please select your keyboard layout from this list:" --title="Keymap Selection" --column="Keymap" "${options[@]}")
 
-  # Zenity prompt to confirm selected keymap
-  zenity --question --text="Your keyboard layout: ${keymap}. Is this correct?" --title="Keymap Confirmation"
-
-  # Check user response and set keymap accordingly
-  if [ $? = 0 ]; then
-    set_option KEYMAP $keymap
-    loadkeys $keymap
-  else
-    while true; do
-      keymap=$(zenity --list --text="Please choose your keyboard layout again:" --title="Keymap Selection" --column="Keymap" "${options[@]}")
-      zenity --question --text="Your keyboard layout: ${keymap}. Is this correct?" --title="Keymap Confirmation"
-      if [ $? = 0 ]; then
-        set_option KEYMAP $keymap
-        loadkeys $keymap
-        break
-      else
-        zenity --error --text="Please choose your keyboard layout again." --title="Keymap Selection Error"
-      fi
-    done
-  fi
+    # Zenity prompt to confirm selected keymap
+    if zenity --question --text="Your keyboard layout: ${keymap}. Is this correct?" --title="Keymap Confirmation"; then
+       set_option KEYMAP $keymap
+       loadkeys $keymap
+    else
+       keymap
+    fi
+  done
 }
 
 
@@ -117,17 +97,13 @@ function keymap() {
 function loginshell() {
     # Define available options
     options=("bash" "fish" "zsh")
-    shellchoice=$(zenity --list --title="Login Shell" --text="Please select a Login Shell" --column="shells" "${options[@]}")
-    confirmed=0
-    while [ $confirmed -eq 0 ]; do
-        zenity --question --text="You have selected '$shellchoice'. Are you sure?" --title="Confirmation"
-        if [ $? -eq 0 ]; then
-            confirmed=1
-        else
-            loginshell
-        fi
-    done
-    set_option SHELLCHOICE $shellchoice
+    shellchoice=$(zenity --list --title="Login Shell" --text="Please select a login shell" --column="Shells" "${options[@]}")
+    
+    if zenity --question --text="You have selected '$shellchoice'. Is this correct?" --title="Confirmation"; then
+        set_option SHELLCHOICE $shellchoice
+    else
+        loginshell
+    fi
 }
 
 
@@ -139,7 +115,7 @@ function desktopenv () {
     if zenity --question --title="Confirmation" --text="Your environment: ${dechoice}. Is this correct?" --ok-label="Yes" --cancel-label="No"; then
         set_option DECHOICE $dechoice
     else
-        clear; desktopenv
+        desktopenv
     fi
 }
 
@@ -151,89 +127,61 @@ function kernelselect () {
   kernelchoice=$(zenity --list --text "Please select a kernel from this list" --title "Kernel Selection" --column "Kernel" "${options[@]}")
 
   # Prompt user to confirm selected kernel
-  zenity --question --text "Your kernel: ${kernelchoice}. Is this correct?" --title "Kernel Confirmation"
-
-  # Check user response and set kernel accordingly
-  if [ $? = 0 ]; then
+  if zenity --question --text "Your kernel: ${kernelchoice}. Is this correct?" --title "Kernel Confirmation"; then
     set_option KERNELCHOICE $kernelchoice
   else
-    while true; do
-      kernelchoice=$(zenity --list --text "Please choose your kernel again:" --title "Kernel Selection" --column "Kernel" "${options[@]}")
-      zenity --question --text "Your kernel: ${kernelchoice}. Is this correct?" --title "Kernel Confirmation"
-      if [ $? = 0 ]; then
-        set_option KERNELCHOICE $kernelchoice
-        break
-      else
-        zenity --error --text "Please choose your kernel again." --title "Kernel Selection Error"
-      fi
-    done
+    kernelselect
   fi
 }
 
 
 
-function lib32repo () {
+function lib32repo() {
   libchoice=$(zenity --list --text "Do you want the Multilib repo?" --column "Options" "yes" "no")
 
-  zenity --question --text="Your choice: $libchoice\nIs this correct?" --ok-label="Yes" --cancel-label="No"
-  response=$?
-  
-  case $response in
-    0)
-      set_option LIBCHOICE $libchoice;;
-    1)
-      clear
-      echo "Please choose again"
-      lib32repo;;
-    *)
-      echo "Wrong option. Try again"
-      lib32repo;;
-  esac
+  if zenity --question --text="Your choice: $libchoice\nIs this correct?" --ok-label="Yes" --cancel-label="No"; then
+    set_option LIBCHOICE $libchoice
+  else
+    lib32repo
+  fi
 }
+
 
 
 
 function AurHelper () {
     aurchoice=$(zenity --list --title="AUR Helper" --text="Please select an aur helper from this list" --column="Options" "none" "yay" "paru" "octopi-paru" "octopi-yay")
     
-    zenity --question --title="Confirm" --text="Your choice : ${aurchoice}\nIs this correct?"
-    
-    if [[ $? -eq 0 ]]; then
+    if zenity --question --title="Confirm" --text="Your choice : ${aurchoice}\nIs this correct?"; then
         set_option AURCHOICE $aurchoice
     else
-        zenity --warning --title="Wrong option" --text="Wrong option. Try again"
         AurHelper
     fi
 }
 
 
 
-function chaorepo () {
-    chaochoice=$(zenity --list --title="Chaotic-Aur Repo" --text="Do you want the Chaotic-Aur repo ?" --column="Options" "no" "yes")
-    
-    zenity --question --title="Confirm" --text="Your choice : ${chaochoice}\nIs this correct?"
-    
-    if [[ $? -eq 0 ]]; then
-        set_option CHAOCHOICE $chaochoice
-    else
-        zenity --warning --title="Wrong option" --text="Wrong option. Try again"
-        chaorepo
-    fi
+function chaorepo() {
+  chaochoice=$(zenity --list --title="Chaotic-Aur Repo" --text="Do you want the Chaotic-Aur repo?" --column="Options" "no" "yes")
+
+  if zenity --question --title="Confirm" --text="Your choice: ${chaochoice}. Is this correct?"; then
+    set_option CHAOCHOICE $chaochoice
+  else
+    chaorepo
+  fi
 }
+
 
 
 
 function blackarch () {
     blackchoice=$(zenity --list --title="BlackArch Repo" --text="Do you want the BlackArch repo ?" --column="Options" "no" "yes")
     
-    zenity --question --title="Confirm" --text="Your choice : ${blackchoice}\nIs this correct?"
-    
-    if [[ $? -eq 0 ]]; then
+     if zenity --question --title="Confirm" --text="Your choice : ${blackchoice}\nIs this correct?"; then
         set_option BLACKCHOICE $blackchoice
     else
-        zenity --warning --title="Wrong option" --text="Wrong option. Try again"
         blackarch
-    fi
+     fi
 }
 
 
@@ -302,9 +250,7 @@ function myhostname() {
     fi
   done
 
-  zenity --question --text="Your hostname is ${hostname}. Is this correct?" --title="Confirmation" 2>/dev/null
-
-  if [ $? -eq 0 ]; then
+  if zenity --question --text="Your hostname is ${hostname}. Is this correct?" --title="Confirmation" 2>/dev/null ; then
     set_option NAME_OF_MACHINE "$hostname"
   else
     myhostname
@@ -322,11 +268,7 @@ function efiformat () {
         uuid2=$(blkid -o value -s UUID $partition2)
         set_option EFIUUID $uuid2
     else
-        if zenity --question --text="Please make sure it's a valid EFI partition, otherwise the following may fail.\nClick 'OK' to resume."; then
-            return 0
-        else
-            efiformat
-        fi
+        zenity --warning --text="Please make sure it's a valid EFI partition, otherwise the following may fail.Click 'OK' to resume."
     fi
 }
 
