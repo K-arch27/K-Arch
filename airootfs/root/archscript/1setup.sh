@@ -445,7 +445,11 @@ function rootpartition() {
     pacman-key --populate archlinux
     pacman -Sy archlinux-keyring --needed --noconfirm
     sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-    pacman -S --noconfirm --needed btrfs-progs gptfdisk reflector rsync glibc
+    pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+    pacman-key --lsign-key FBA220DFC880C036
+    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
+    cat /root/mirror.txt >> /etc/pacman.conf
+    pacman -Sy  chaotic-keyring --needed --noconfirm
     timedatectl set-ntp true
     reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
     keymap
