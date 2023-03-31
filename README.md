@@ -1,5 +1,5 @@
-## K-Arch
-# My own Config for ArchIso Installing Arch with Btrfs
+# K-Arch
+## My own Config for ArchIso Installing Arch with Btrfs
 
 
 --
