@@ -2,6 +2,16 @@
 
 #!/bin/bash
 
+# This script will ask users about their prefrences
+# like timezone, keyboard layout,
+# user name, password, etc.
+
+
+# set up a config file
+CONFIG_FILE=/root/archscript/config.sh
+source /root/archscript/config.sh
+
+
 function partition_check {
     # Prompt the user with a clickable option to check if they are ready
     zenity --question --text="Are your partitions ready?" --ok-label="Yes" --cancel-label="No"
@@ -11,50 +21,6 @@ function partition_check {
         while pgrep gparted >/dev/null; do sleep 1; done
     fi
 }
-
-
-    partition_check
-    # Check for available partitions
-    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
-
-    # If no partitions are found, return error
-    if [[ -z "$partitions" ]]; then
-        zenity --error --text "No available partitions found."
-        return 1
-    fi
-    
-# This script will ask users about their prefrences
-# like timezone, keyboard layout,
-# user name, password, etc.
-
-
-    pacman-key --init
-    pacman-key --populate archlinux
-    pacman -Sy archlinux-keyring --needed --noconfirm
-    sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-    
-    #Might have to resort to using this if I can't figure out chaotic-aur signing consistently
-    #sed -i 's/^SigLevel    = Required DatabaseOptional/SigLevel    = Never/' /etc/pacman.conf
-
-    pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-    pacman-key --lsign-key FBA220DFC880C036
-    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
-    cat $SCRIPT_DIR/mirror.txt >> /etc/pacman.conf
-    pacman -Sy  chaotic-keyring --needed --noconfirm
-    pacman -S --noconfirm --needed btrfs-progs gptfdisk reflector rsync glibc
-    timedatectl set-ntp true
-    echo -ne "
--------------------------------------------------------------------------
-                    Updating Mirrorlist
--------------------------------------------------------------------------
-"
-    reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
-
-    clear
-
-# set up a config file
-CONFIG_FILE=/root/archscript/config.sh
-source /root/archscript/config.sh
 
 
 function timezone() {
@@ -325,8 +291,6 @@ function efiformat () {
         set_option EFIUUID $uuid2
     else
         if zenity --question --text="Please make sure it's a valid EFI partition, otherwise the following may fail.\nClick 'OK' to resume."; then
-            uuid2=$(blkid -o value -s UUID $partition2)
-            set_option EFIUUID $uuid2
             return 0
         else
             efiformat
@@ -519,58 +483,36 @@ function rootpartition() {
 }
 
 
-    clear
-    logo
+
+
+
+    partition_check
+    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
+
+    pacman-key --init
+    pacman-key --populate archlinux
+    pacman -Sy archlinux-keyring --needed --noconfirm
+    sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
+    pacman -S --noconfirm --needed btrfs-progs gptfdisk reflector rsync glibc
+    timedatectl set-ntp true
+    reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
     keymap
-    clear
-    logo
     userinfo
-    clear
-    logo
     myhostname
-    clear
-    logo
     timezone
-    clear
-    logo
     localeselect
-    clear
-    logo
     lsblk
     efipartition
-    clear
-    logo
     efiformat
-    clear
-    logo
+    uuid2=$(blkid -o value -s UUID $partition2)
+    set_option EFIUUID $uuid2
     swappartition
-    clear
-    logo
-    lsblk
     homepartition
-    clear
-    logo
-    lsblk
     rootpartition
-    clear
-    clear
-    logo
     loginshell
-    clear
-    logo
     desktopenv
-    clear
-    logo
     kernelselect
-    clear
-    logo
     lib32repo
-    clear
-    logo
     AurHelper
-    clear
-    logo
     chaorepo
-    clear
-    logo
     blackarch
