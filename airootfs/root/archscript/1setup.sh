@@ -60,7 +60,7 @@ function timezone() {
 
 function localeselect() {
   # Get a list of available locales
-  options=($(locale -a))
+  options=($(locale -a) en_CA.UTF-8 en_HK.UTF-8 en_US.UTF-8 fr_CA.UTF-8 fr_FR.UTF-8 zh_CN.UTF-8 zh_TW.UTF-8 hu.UTF-8 it_IT.UTF-8 ja_JP.UTF-8 ru_RU.UTF-8 es_ES.UTF-8 de_DE.UTF-8 ar_SA.UTF-8 af_ZA.UTF-8)
 
   # Zenity prompt to select locale
   locale=$(zenity --list --text="Please select your locale from this list:" --title="Locale Selection" --column="Locale" "${options[@]}")
