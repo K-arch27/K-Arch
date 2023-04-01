@@ -28,8 +28,8 @@ source $SCRIPT_DIR/config.sh
 	btrfs subvolume create /mnt/@/var/spool
 	btrfs subvolume create /mnt/@/var/tmp
 	NOW=$(date +"%Y-%m-%d %H:%M:%S")
-	sed -i "s|2022-01-01 00:00:00|${NOW}|" info.xml
-	cp info.xml /mnt/@/.snapshots/1/info.xml
+	sed -i "s|2022-01-01 00:00:00|${NOW}|" /root/archscript/info.xml
+	cp /root/archscript/info.xml /mnt/@/.snapshots/1/info.xml
   	btrfs subvolume set-default $(btrfs subvolume list /mnt | grep "@/.snapshots/1/snapshot" | grep -oP '(?<=ID )[0-9]+') /mnt
 	btrfs quota enable /mnt
 	chattr +C /mnt/@/var/cache
