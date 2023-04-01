@@ -191,10 +191,14 @@ function userinfo () {
 while true; do
   username=$(zenity --entry --text="Choose A Username:" 2>/dev/null)
   if [[ ! "$username" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
-   zenity --error --text "Invalid username. Usernames must start with a letter or underscore, and only contain letters, digits, hyphens, and underscores."
+    zenity --error --text "Invalid username. Usernames must start with a letter or underscore, and only contain letters, digits, hyphens, and underscores."
   else
-    set_option USERNAME "${username}"
-    break
+        if zenity --question --text="Your Username: ${username}. Is this correct?" --title="Username Confirmation"; then
+          set_option USERNAME "${username}"
+          break
+        else
+          userinfo
+        fi
   fi
 done
 
