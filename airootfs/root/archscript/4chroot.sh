@@ -39,7 +39,7 @@ echo -ne "
                     Adding User
 -------------------------------------------------------------------------
 "
-#adduser -m -p <encrypted-password> <username>
+
 groupadd libvirt
 
 if [ "$SHELLCHOICE" = "bash" ]; then
