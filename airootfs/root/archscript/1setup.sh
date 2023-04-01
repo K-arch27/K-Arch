@@ -204,12 +204,11 @@ function userpass () {
 
 while true; do
 
-password=$(zenity --password --title "Enter User Password" 2>/dev/null)
-password2=$(zenity --password --title "Repeat User Password" 2>/dev/null)
+password=$(zenity --password --text "Please enter the User password:" --title "Enter User Password" 2>/dev/null)
+password2=$(zenity --password --text "Please confirm the User password:" --title "Confirm User Password" 2>/dev/null)
 
   if [ "$password" = "$password2" ]; then
-    hashed_password=$(echo "$password" | sha256sum | awk '{print $1}')
-    set_option PASSWORD "${hashed_password}"
+    set_option PASSWORD "${password}"
     break
   else
     zenity --error --text "Passwords do not match. Please try again."
@@ -222,13 +221,12 @@ function rootpass () {
 
 while true; do
 
-rootpassword=$(zenity --password --title "Enter Root Password" 2>/dev/null)
-rootpassword2=$(zenity --password --title "Repeat Root Password" 2>/dev/null)
+rootpassword=$(zenity --password --text "Please enter the root password:" --title "Enter Root Password" 2>/dev/null)
+rootpassword2=$(zenity --password --text "Please confirm the root password:" --title "confirm Root Password" 2>/dev/null)
 
 
   if [ "$rootpassword" = "$rootpassword2" ]; then
-    hashed_rootpassword=$(echo "$rootpassword" | sha256sum | awk '{print $1}')
-    set_option ROOTPASSWORD "${hashed_rootpassword}"
+    set_option ROOTPASSWORD "${rootpassword}"
     break
   else
     zenity --error --text "Passwords do not match. Please try again."
