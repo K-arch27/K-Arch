@@ -4,7 +4,7 @@
 
 --
 
-Use ./build.sh to build the Iso
+Use mkarchiso to build
 
 --
 
