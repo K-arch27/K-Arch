@@ -10,4 +10,4 @@ Use mkarchiso to build
 
 Auto Install Arch with prompt for the user to choose
 Live openbox environement with Gparted Firefox and Konsole (cause why not)
-autostarting this script : https://github.com/K-arch27/archscript/tree/K-Arch-Iso
+autostarting a variation of my script found there : https://github.com/K-arch27/archscript
