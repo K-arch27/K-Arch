@@ -24,6 +24,7 @@ function partition_check {
     # Prompt the user with a clickable option to check if they are ready
     zenity --question --text="Are your partitions ready?" --ok-label="Yes" --cancel-label="No"
     if [ $? -eq 1 ]; then
+         zenity --info --text="Close Gparted When Done"
         # Launch GParted and wait for it to close
         gparted &
         while pgrep gparted >/dev/null; do sleep 1; done
