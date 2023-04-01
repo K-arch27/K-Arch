@@ -52,6 +52,7 @@ function timezone() {
         break
       else
         zenity --error --text="Invalid timezone entered. Please try again." --title="Timezone Selection Error"
+        firefox 'https://wiki.archlinux.org/title/System_time#Time_zone' &
       fi
     done
   fi
