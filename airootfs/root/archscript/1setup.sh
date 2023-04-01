@@ -137,6 +137,40 @@ function kernelselect () {
 
 
 
+function custompkg() {
+   if [ zenity --question --text="Want to Add additionnal packages ?" --ok-label="Yes" --cancel-label="No" ]; then
+        
+        # Prompt the user to enter a list of packages using Zenity
+        package_list=$(zenity --entry --title="Package List" --text="Please enter a list of packages separated by spaces:")
+
+        # Split the user input into an array of package names
+        IFS=' ' read -r -a packages <<< "$package_list"
+
+        # Verify that all packages exist
+        packages_exist=true
+        for package in "${packages[@]}"
+        do
+            if ! pacman -Qi "$package" > /dev/null 2>&1; then
+                zenity --error --title="Error" --text="Package '$package' not found"
+                packages_exist=false
+                
+            fi
+        done
+
+        # If all packages exist, save the list to a variable for later use
+        if $packages_exist; then
+            package_var=$(echo "${packages[@]}")
+            zenity --info --title="Packages Found" --text="Packages found: $package_var"
+            set_option EXTRAPKG $package_var
+        fi
+  
+    else
+    
+    fi
+}
+
+
+
 function lib32repo() {
   libchoice=$(zenity --list --text "Do you want the Multilib repo?" --column "Options" "yes" "no")
 
