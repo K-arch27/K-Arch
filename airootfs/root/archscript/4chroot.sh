@@ -39,11 +39,12 @@ echo -ne "
                     Adding User
 -------------------------------------------------------------------------
 "
-
+#adduser -m -p <encrypted-password> <username>
 groupadd libvirt
 
 if [ "$SHELLCHOICE" = "bash" ]; then
       useradd -m -G wheel,libvirt -s /bin/bash $USERNAME
+      
    elif [ "$SHELLCHOICE" = "fish" ]; then
       useradd -m -G wheel,libvirt -s /bin/fish $USERNAME
          elif [ "$SHELLCHOICE" = "osh" ]; then
