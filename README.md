@@ -25,6 +25,9 @@
 
 - A btrfs layout working with snapper out of the box
 
+![image](https://user-images.githubusercontent.com/98610690/229260800-4bc7d45d-16f6-472e-81d8-92bae0d2e08b.png)
+
+
 
 - Bootable snapshot
 
