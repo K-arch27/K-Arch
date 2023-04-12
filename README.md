@@ -29,6 +29,8 @@
 ![image](https://user-images.githubusercontent.com/98610690/229261079-2cd61223-7cca-4d84-aba4-c591b3cfaa61.png) ![image](https://user-images.githubusercontent.com/98610690/229261090-509181ac-b714-4d9f-9723-43d6307deb75.png)
 
 
+- Possibility to add package of your choice during install
+
 
 - A btrfs layout working with snapper out of the box
 
