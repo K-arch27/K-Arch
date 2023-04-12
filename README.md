@@ -46,5 +46,7 @@
 ### -- To do --
 
 Make it work with Bios
+
 add luks encryption option
+
 more ..?
