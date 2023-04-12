@@ -14,6 +14,16 @@
       </startupnotify>
     </action>
   </item>
+    
+        <item label="K-Arch Btrfs Layout">
+    <action name="Execute">
+      <command>konsole --noclose -e /root/archscript/btrfs.sh</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+
 
       <item label="Gparted">
     <action name="Execute">
