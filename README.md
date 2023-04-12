@@ -7,7 +7,8 @@
 ### -- Build yourself --
 
 1. Install archiso
-2. Use mkarchiso to build inside this directory
+2. Clone this repo
+3. Use mkarchiso inside the repo to build the iso
 
 ### -- Features --
 
