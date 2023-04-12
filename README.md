@@ -12,17 +12,16 @@
 ### -- Features --
 
 
-
 - Live Environement Booting OpenBox
+
+
+- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and mount them ready for a manual install
 
 
 - Gparted Included for ease of partitionning
 
 
 - Firefox Included so the user can make some search on the different options
-
-
-- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and mount them ready for a manual install
 
 
 - Auto-Installer that prompt the User with some choice about the system they want (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
