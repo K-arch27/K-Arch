@@ -1,4 +1,7 @@
 #!/bin/bash
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source $SCRIPT_DIR/config.sh
+
 
 function partition_check {
     # Prompt the user with a clickable option to check if they are ready
