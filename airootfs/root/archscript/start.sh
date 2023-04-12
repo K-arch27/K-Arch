@@ -22,13 +22,7 @@ echo -ne "
     chmod +x /root/archscript/4chroot.sh
     chmod +x /root/archscript/5final.sh
 
-
-    # Prompt the user with a clickable option to check if they are ready
-   if [ zenity --question --text="What do you want to do ?" --ok-label="No" --cancel-label="yes" ]; then
-        zenity --info --text="The script can be launched back with Right click on the desktop"
-        exit
-   fi
-   
+function StartingUp {
    
    
    
@@ -65,3 +59,8 @@ case $result in
         exit
         ;;
 esac
+
+}
+
+
+StartingUp
