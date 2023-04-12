@@ -22,6 +22,9 @@
 - Firefox Included so the user can make some search on the different options
 
 
+- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and mount them ready for a manual install
+
+
 - Auto-Installer that prompt the User with some choice about the system they want (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
 ![image](https://user-images.githubusercontent.com/98610690/229261079-2cd61223-7cca-4d84-aba4-c591b3cfaa61.png) ![image](https://user-images.githubusercontent.com/98610690/229261090-509181ac-b714-4d9f-9723-43d6307deb75.png)
 
