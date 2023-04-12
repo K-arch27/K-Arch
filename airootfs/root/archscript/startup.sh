@@ -14,11 +14,7 @@ echo -ne "
 -------------------------------------------------------------------------
 
 "
-    chmod +x /root/archscript/1setup.sh
-    chmod +x /root/archscript/2partition.sh
-    chmod +x /root/archscript/3strap.sh
-    chmod +x /root/archscript/4chroot.sh
-    chmod +x /root/archscript/5final.sh
+
     source /root/archscript/config.sh
     ( bash /root/archscript/1setup.sh )|& tee /root/archscript/setup.log
     ( bash /root/archscript/2partition.sh )|& tee /root/archscript/partition.log
