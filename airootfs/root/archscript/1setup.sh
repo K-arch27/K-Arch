@@ -138,7 +138,7 @@ function kernelselect () {
 
 
 function custompkg() {
-   if [ zenity --question --text="Want to Add additionnal packages ?" --ok-label="Yes" --cancel-label="No" ]; then
+   if [zenity --question --text="Want to Add additionnal packages ?" --ok-label="Yes" --cancel-label="No"]; then
         
         # Prompt the user to enter a list of packages using Zenity
         package_list=$(zenity --entry --title="Package List" --text="Please enter a list of packages separated by spaces:")
@@ -158,14 +158,12 @@ function custompkg() {
         done
 
         # If all packages exist, save the list to a variable for later use
-        if $packages_exist; then
+        if [$packages_exist]; then
             package_var=$(echo "${packages[@]}")
             zenity --info --title="Packages Found" --text="Packages found: $package_var"
             set_option EXTRAPKG $package_var
         fi
   
-    else
-    
     fi
 }
 
