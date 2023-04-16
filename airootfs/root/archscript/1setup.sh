@@ -261,7 +261,7 @@ done
 function rootpass () {
 
 while true; do
-
+zenity --info --text="Please Enter the password for Root now" --title="Root Password"
 rootpassword=$(zenity --password --text "Please enter the root password:" --title "Enter Root Password" 2>/dev/null)
 rootpassword2=$(zenity --password --text "Please confirm the root password:" --title "confirm Root Password" 2>/dev/null)
 
