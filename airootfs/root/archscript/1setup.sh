@@ -313,6 +313,7 @@ function swappartition() {
     
     # Ask user if they have a Swap partition
     if zenity --question --text="Do you have a Swap partition?"; then
+        set_option SWAPPART "yes"
         swappartition2
     else
         zenity --info --text="No Swap partition will be used." 2>/dev/null
