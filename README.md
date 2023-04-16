@@ -14,10 +14,10 @@
 ### -- Features --
 
 
-- Live Environement Booting OpenBox
+- Live Environement Booting Xfce
 
 
-- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and mount them ready for a manual install
+- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and make everything ready for a manual install
 
 
 - Gparted Included for ease of partitionning
