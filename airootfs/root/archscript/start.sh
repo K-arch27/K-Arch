@@ -23,44 +23,37 @@ echo -ne "
     chmod +x /root/archscript/5final.sh
 
 function StartingUp {
-   
-   
-   
-# Display Zenity dialog box with three buttons
-zenity --question --title="Choose an option" --text="Select an option:" \
-       --ok-label="Install Arch Linux" --cancel-label="Use the Btrfs Layout Tool only" --extra-button="Close For Now"
+    # Define the options for the dropdown list
+    options=("Install Arch Linux" "Use the Btrfs Layout Tool only" "Close For Now")
 
-# Capture the exit status of the dialog box
-result=$?
+    # Display Zenity dialog box with a dropdown list
+    selected_option=$(zenity --list --title="Choose an option" --text="Select an option:" \
+                           --column="Options" "${options[@]}")
 
-# Check exit status and take appropriate action
-case $result in
-    0)
-        # Action for Option 1 (OK button)
-    ( bash /root/archscript/startup.sh )|& tee /root/archscript/startup.log
-    zenity --info --title="Done" --text="You can now reboot or use chroot and customize your system" --ok-label="OK"
-    exit
-        ;;
-    1)
-        # Action for Option 2 (Cancel button)
-    ( bash /root/archscript/btrfs.sh )|& tee /root/archscript/btrfs.log
-    ( bash /root/archscript/2partition.sh )|& tee /root/archscript/partition.log
-    zenity --info --title="Done" --text="You can now proceed with a normal manual install" --ok-label="OK"
-    exit
-        ;;
-    2)
-        # Action for Option 3 (Extra button)
-        echo "Option 3 selected"
-        zenity --info --title="When Ready" --text="You can Launch Back the install / Layout tool by right clicking the desktop" --ok-label="OK"
-        exit
-        ;;
-    *)
-        # No or invalid choice
-        exit
-        ;;
-esac
-
+    # Check the selected option and take appropriate action
+    case "$selected_option" in
+        "Install Arch Linux")
+            # Action for Option 1 (Install Arch Linux)
+            konsole --noclose -e /root/archscript/startup.sh &
+            exit
+            ;;
+        "Use the Btrfs Layout Tool only")
+            # Action for Option 2 (Use the Btrfs Layout Tool only)
+            konsole --noclose -e /root/archscript/btrfs.sh &
+            exit
+            ;;
+        "Close For Now")
+            # Action for Option 3 (Close For Now)
+            zenity --info --title="When Ready" --text="You can Launch Back the install / Layout tool by right clicking the desktop" --ok-label="OK"
+            exit
+            ;;
+        *)
+            # No or invalid choice
+            exit
+            ;;
+    esac
 }
+
 
 
 StartingUp
