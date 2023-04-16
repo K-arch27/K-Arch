@@ -8,7 +8,7 @@
 
     <item label="K-Arch Install">
     <action name="Execute">
-      <command>konsole --noclose -e /root/archscript/startup.sh</command>
+      <command>alacritty -e /root/archscript/startup.sh</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
@@ -17,7 +17,7 @@
     
         <item label="K-Arch Btrfs Layout">
     <action name="Execute">
-      <command>konsole --noclose -e /root/archscript/btrfs.sh</command>
+      <command>alacritty -e /root/archscript/btrfs.sh</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
@@ -34,9 +34,9 @@
     </action>
   </item>
 
-    <item label="Konsole Terminal">
+    <item label="Terminal">
     <action name="Execute">
-      <command>konsole</command>
+      <command>alacritty</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
