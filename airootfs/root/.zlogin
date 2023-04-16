@@ -5,4 +5,7 @@ fi
 systemctl enable --now NetworkManager
 chmod +x /root/archscript/start.sh
 
+if [[ "$(tty)" == "/dev/tty1" ]]; then
 startx
+fi
+
