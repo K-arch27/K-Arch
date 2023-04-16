@@ -4,7 +4,7 @@ xorg
 zenity
 gparted
 thunar
-konsole
+alacritty
 firefox
 kate
 xorg-xinit
