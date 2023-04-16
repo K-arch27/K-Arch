@@ -40,7 +40,7 @@ function timezone() {
   # Zenity prompt to confirm detected timezone
   if zenity --question --text="System detected your timezone to be '$timezone'. Is this correct?" --title="Timezone Detection"; then
     zenity --info --text="${timezone} set as timezone." --title="Timezone Set"
-    setopt TIMEZONE $timezone
+    set_option TIMEZONE $timezone
   else
     while true; do
       new_timezone=$(zenity --entry --text="Please enter your desired timezone e.g. Europe/London:" --title="Timezone Selection")
@@ -48,7 +48,7 @@ function timezone() {
       # Verify that the timezone entered is valid
       if tzselect <<< "$new_timezone" >/dev/null 2>&1; then
         zenity --info --text="${new_timezone} set as timezone." --title="Timezone Set"
-        setopt TIMEZONE $new_timezone
+        set_option TIMEZONE $new_timezone
         break
       else
         zenity --error --text="Invalid timezone entered. Please try again." --title="Timezone Selection Error"
