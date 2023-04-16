@@ -147,19 +147,19 @@ function custompkg () {
         IFS=' ' read -r -a packages <<< "$package_list"
 
         # Verify that all packages exist
-        packages_exist=true
+        packages_exist="yes"
         for package in "${packages[@]}"
         do
             if ! pacman -Ss "$package" > /dev/null 2>&1; then
                 zenity --error --title="Error" --text="Package '$package' not found"
-                packages_exist=false
+                packages_exist="no"
                 custompkg
                 
             fi
         done
 
         # If all packages exist, save the list to a variable for later use
-        if [$packages_exist]; then
+        if ["$packages_exist" = "yes"] ; then
             package_var=$(echo "${packages[@]}")
             zenity --info --title="Packages Found" --text="Packages found: $package_var"
             set_option EXTRAPKG $package_var
