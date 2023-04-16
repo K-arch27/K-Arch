@@ -133,7 +133,18 @@ function homepartition() {
     fi
 }
 
+function efiformat () {
 
+    # choice for formatting the EFI partition
+    if zenity --question --text="Do you want to format the EFI partition ${partition2}?\nChoose 'No' if it's already used by another system or 'Yes' if it's a new partition."; then
+        zenity --warning --text "EFI partition will be formatted."
+        mkfs.vfat -F32 ${partition2}
+        uuid2=$(blkid -o value -s UUID $partition2)
+        set_option EFIUUID $uuid2
+    else
+        zenity --warning --text="Please make sure it's a valid EFI partition, otherwise the following may fail.Click 'OK' to resume."
+    fi
+}
 
 function efipartition() {
    
