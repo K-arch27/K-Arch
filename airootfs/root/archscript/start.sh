@@ -33,18 +33,25 @@ function StartingUp {
     # Check the selected option and take appropriate action
     case "$selected_option" in
         "Install Arch Linux")
+        
             # Action for Option 1 (Install Arch Linux)
-            konsole --noclose -e /root/archscript/startup.sh &
-            exit
+   source /root/archscript/config.sh
+    ( bash /root/archscript/1setup.sh )|& tee /root/archscript/setup.log
+    ( bash /root/archscript/2partition.sh )|& tee /root/archscript/partition.log
+    ( bash /root/archscript/3strap.sh )|& tee /root/archscript/strap.log
+    ( arch-chroot /mnt /root/archscript/4chroot.sh )|& tee /mnt/root/archscript/chroot.log
+    ( arch-chroot /mnt /root/archscript/5final.sh )|& tee /mnt/root/archscript/final.log
+ 
             ;;
         "Use the Btrfs Layout Tool only")
             # Action for Option 2 (Use the Btrfs Layout Tool only)
-            konsole --noclose -e /root/archscript/btrfs.sh &
-            exit
+            
+           ( bash /root/archscript/btrfs.sh )|& tee /root/archscript/btrfs.log
+           
             ;;
         "Close For Now")
             # Action for Option 3 (Close For Now)
-            zenity --info --title="When Ready" --text="You can Launch Back the install / Layout tool by right clicking the desktop" --ok-label="OK"
+            zenity --info --title="When Ready" --text="You can Launch Back the script on the desktop" --ok-label="OK"
             exit
             ;;
         *)
