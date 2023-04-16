@@ -14,7 +14,6 @@ echo -ne "
 -------------------------------------------------------------------------
 "
     source /root/archscript/config.sh
-    chmod +x /root/archscript/startup.sh
     chmod +x /root/archscript/btrfs.sh
     chmod +x /root/archscript/1setup.sh
     chmod +x /root/archscript/2partition.sh
