@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-iso_name="K-Arch-linux"
+iso_name="K-Arch-linux-xfce"
 iso_label="ARCH_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
 iso_publisher="Kaida"
 iso_application="K-Arch Btrfs Installer"
