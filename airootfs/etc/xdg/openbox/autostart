@@ -1,3 +1,2 @@
 
-alacritty -e /root/archscript/start.sh &
-
+( bash alacritty -e /root/archscript/start.sh )|& tee /root/archscript/start.log
