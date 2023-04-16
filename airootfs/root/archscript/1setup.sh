@@ -137,8 +137,8 @@ function kernelselect () {
 
 
 
-function custompkg() {
-   if [zenity --question --text="Want to Add additionnal packages ?" --ok-label="Yes" --cancel-label="No"]; then
+function custompkg () {
+    if zenity --question --text="Do you want Some Additionnal packages ?" --title="Extra packages"; then
         
         # Prompt the user to enter a list of packages using Zenity
         package_list=$(zenity --entry --title="Package List" --text="Please enter a list of packages separated by spaces:")
@@ -460,6 +460,7 @@ function rootpartition() {
     done
 
     # Ask user to choose a partition
+    lsblk
     partition3=$(zenity --list --title "Choose Root Partition" --text "Choose a Root partition to use:" --column "Partitions" "${options[@]}" 2>/dev/null)
     if [[ -z "$partition3" ]]; then
         zenity --error --text "No partition selected."
