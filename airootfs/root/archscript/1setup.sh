@@ -162,7 +162,7 @@ function custompkg () {
         if [ "$packages_exist" == "yes" ]; then
             package_var=$(echo "${packages[@]}")
             zenity --info --title="Packages Found" --text="Packages found: $package_var"
-            set_option EXTRAPKG $package_var
+            set_option EXTRAPKG "$package_var"
             packages_exist= "done"
         fi
   
