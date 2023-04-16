@@ -30,21 +30,20 @@ echo -ne "
 
 
 
-#required Package
+#Shell Choice
 if [ "$SHELLCHOICE" = "fish" ]; then
       pacstrap /mnt fish
-      
-      elif [ "$SHELLCHOICE" = "osh" ]; then
-      pacstrap /mnt oil
       
       elif [ "$SHELLCHOICE" = "zsh" ]; then
       pacstrap /mnt zsh
 fi
+
+# Some Base packages Needed for Arch and Snapshots
 pacstrap /mnt base base-devel linux-firmware e2fsprogs dosfstools grub grub-btrfs os-prober efibootmgr btrfs-progs ntfs-3g snapper snap-pac snap-pac-grub
 
 
 
-#Kernel Choice installation
+#Kernel Choice and headers
 
 if [ "$KERNELCHOICE" = "linux" ]; then
 
@@ -64,13 +63,15 @@ if [ "$KERNELCHOICE" = "linux" ]; then
 
 fi
 
-#Optionnal but usefull packages
+#Optionnal but usefull packages (should be an option)
 
 pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo 
 
 
 
 #GUI choice installation
+
+#use command "kde" to start up kaidaplasma :/
 if [ "$DECHOICE" = "kaidaplasma" ]; then
       pacstrap /mnt  xorg xorg-server xorg-xinit plasma konsole dolphin dolphin-plugins ark kate kcalc kolourpaint spectacle krunner partitionmanager packagekit-qt5 
       pacstrap /mnt latte-dock discord filelight htop kruler ksysguard yakuake nano starship neofetch firefox git
@@ -147,6 +148,11 @@ if [ "$DECHOICE" = "kaidaplasma" ]; then
 fi
 
 
+if [ "$PKGWANT" = "yes" ]; then
+
+      pacstrap /mnt "EXTRAPKG"
+
+fi
 
 
 if [ "$AURCHOICE" = "yay" ]; then
