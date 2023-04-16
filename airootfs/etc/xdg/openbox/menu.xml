@@ -8,7 +8,7 @@
 
     <item label="K-Arch Install">
     <action name="Execute">
-      <command>konsole --noclose -e /root/archscript/start.sh</command>
+      <command>konsole --noclose -e /root/archscript/startup.sh</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
