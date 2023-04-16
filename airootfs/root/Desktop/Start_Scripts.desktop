@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=K-Arch script
+Exec=alacritty -e /root/archscript/start.sh
+Type=Application
