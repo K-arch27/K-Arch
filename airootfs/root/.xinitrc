@@ -2,6 +2,6 @@
 # Start Openbox
 chmod +x /root/archscript/start.sh &
 loadkeys cf &
-exec openbox-session
+exec startxfce4
 
 
