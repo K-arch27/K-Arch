@@ -150,7 +150,7 @@ function custompkg () {
         packages_exist=true
         for package in "${packages[@]}"
         do
-            if ! pacman -Qi "$package" > /dev/null 2>&1; then
+            if ! pacman -Ss "$package" > /dev/null 2>&1; then
                 zenity --error --title="Error" --text="Package '$package' not found"
                 packages_exist=false
                 custompkg
