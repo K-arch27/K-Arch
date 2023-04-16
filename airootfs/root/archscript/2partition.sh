@@ -67,7 +67,12 @@ source $SCRIPT_DIR/config.sh
     mount UUID=${ROOTUUID} -o noatime,ssd,commit=120,subvol=@/var/spool,nodatacow /mnt/var/spool
     mount UUID=${ROOTUUID} -o noatime,ssd,commit=120,subvol=@/var/tmp,nodatacow /mnt/var/tmp
     mount UUID=${EFIUUID} /mnt/boot/efi
+    
+    if [ "$SWAPPART" = "yes" ]; then
+    
     swapon UUID=${SWAPUUID}
+    
+    fi
     
    if [ "$HOMEPART" = "yes" ] && [ "$HOMESNAP" = "no" ]; then
    
