@@ -153,6 +153,7 @@ function custompkg () {
             if ! pacman -Qi "$package" > /dev/null 2>&1; then
                 zenity --error --title="Error" --text="Package '$package' not found"
                 packages_exist=false
+                custompkg
                 
             fi
         done
