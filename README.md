@@ -52,4 +52,6 @@ Make it work with Bios
 
 add luks encryption option
 
+Make it nicer looking
+
 more ..?
