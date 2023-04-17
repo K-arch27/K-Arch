@@ -164,7 +164,7 @@ function custompkg () {
             zenity --info --title="Packages Found" --text="Packages found: $package_var"
             set_option EXTRAPKG "$package_var"
             set_option PKGWANT yes
-            packages_exist= "done"
+            packages_exist="done"
         fi
   
     fi
