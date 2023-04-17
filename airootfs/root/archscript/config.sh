@@ -7,17 +7,18 @@ set_option() {
         if grep -Eq "^${option_name}.*" $CONFIG_FILE; then # Check if option exists
             sed -i -e "/^${option_name}.*/d" $CONFIG_FILE # Delete option if it exists
         fi
-        echo "${option_name}=${2}" >> $CONFIG_FILE # Add option with single value
+        echo "${option_name}='${2}'" >> $CONFIG_FILE # Add option with single value, enclosed in quotes
     else
         # If array values provided, use loop to write each value separately
         if grep -Eq "^${option_name}.*" $CONFIG_FILE; then # Check if option exists
             sed -i -e "/^${option_name}.*/d" $CONFIG_FILE # Delete option if it exists
         fi
         for value in "${option_value[@]}"; do
-            echo "${option_name}=${value}" >> $CONFIG_FILE # Add each value separately
+            echo "${option_name}='${value}'" >> $CONFIG_FILE # Add each value separately, enclosed in quotes
         done
     fi
 }
+
 
 select_option() {
 
