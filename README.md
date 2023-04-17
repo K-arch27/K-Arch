@@ -13,6 +13,7 @@
 
 ### -- Features --
 
+- Installer only work for UEFI for now (make sure to have an Efi partition and a Root partition , the rest is optionnal)
 
 - Live Environement Booting Xfce
 
