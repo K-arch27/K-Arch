@@ -44,19 +44,6 @@ fi
     fi
 
 
-if [ "$AURCHOICE" = "yay" ]; then
-      pacman -S yay --noconfirm
-      
-      elif [ "$AURCHOICE" = "paru" ]; then
-      pacman -S paru --noconfirm
-      
-      elif [ "$AURCHOICE" = "octopi-paru" ]; then
-      pacman -S paru octopi --noconfirm
-      
-      elif [ "$AURCHOICE" = "octopi-yay" ]; then
-      pacman -S yay octopi --noconfirm
-fi
-
 
 
 #Changing The timeline auto-snap
