@@ -69,11 +69,9 @@ pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo
 
 if [ "$PKGWANT" = "yes" ]; then
 
-# Access the array value
-echo "EXTRAPKG: ${EXTRAPKG[@]}"
 
 # Use the array value as an argument for pacstrap
-pacstrap /mnt "${EXTRAPKG[@]}"
+pacstrap /mnt $EXTRAPKG
 
 fi
 
