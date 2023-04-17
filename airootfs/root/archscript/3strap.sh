@@ -68,8 +68,13 @@ fi
 pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo 
 
 if [ "$PKGWANT" = "yes" ]; then
+
       echo "custom pkg install now"
-      pacstrap /mnt ${EXTRAPKG}
+# Convert the array elements to a space-separated string
+extrapkg_string=$(printf "%s " "${EXTRAPKG[@]}")
+
+# Use pacstrap with the extrapkg_string as additional packages
+pacstrap /mnt $extrapkg_string
       echo "Custom pkg Done"
 fi
 
