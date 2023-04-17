@@ -150,7 +150,7 @@ fi
 
 if [ "$PKGWANT" = "yes" ]; then
 
-      pacstrap /mnt "EXTRAPKG"
+      pacstrap /mnt ${EXTRAPKG}
 
 fi
 
