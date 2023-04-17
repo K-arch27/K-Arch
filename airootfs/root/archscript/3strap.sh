@@ -67,6 +67,12 @@ fi
 
 pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo 
 
+if [ "$PKGWANT" = "yes" ]; then
+
+      pacstrap /mnt ${EXTRAPKG}
+
+fi
+
 
 
 #GUI choice installation
@@ -144,13 +150,6 @@ if [ "$DECHOICE" = "kaidaplasma" ]; then
    else
 
       echo -ne "no Gui was choosen so no display manager will be initialized"
-
-fi
-
-
-if [ "$PKGWANT" = "yes" ]; then
-
-      pacstrap /mnt ${EXTRAPKG}
 
 fi
 
