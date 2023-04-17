@@ -1,9 +1,22 @@
-
 set_option() {
-    if grep -Eq "^${1}.*" $CONFIG_FILE; then # check if option exists
-        sed -i -e "/^${1}.*/d" $CONFIG_FILE # delete option if exists
+    option_name=$1
+    option_value=("${@:2}") # Get the remaining arguments as an array
+
+    if [ ${#option_value[@]} -eq 0 ]; then
+        # If no array values provided, use previous version that treats it as a single value
+        if grep -Eq "^${option_name}.*" $CONFIG_FILE; then # Check if option exists
+            sed -i -e "/^${option_name}.*/d" $CONFIG_FILE # Delete option if it exists
+        fi
+        echo "${option_name}=${2}" >> $CONFIG_FILE # Add option with single value
+    else
+        # If array values provided, use loop to write each value separately
+        if grep -Eq "^${option_name}.*" $CONFIG_FILE; then # Check if option exists
+            sed -i -e "/^${option_name}.*/d" $CONFIG_FILE # Delete option if it exists
+        fi
+        for value in "${option_value[@]}"; do
+            echo "${option_name}=${value}" >> $CONFIG_FILE # Add each value separately
+        done
     fi
-    echo "${1}=${2}" >>$CONFIG_FILE # add option
 }
 
 select_option() {
