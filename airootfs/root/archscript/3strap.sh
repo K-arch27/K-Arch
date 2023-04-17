@@ -68,9 +68,9 @@ fi
 pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo 
 
 if [ "$PKGWANT" = "yes" ]; then
-
+      echo "custom pkg install now"
       pacstrap /mnt ${EXTRAPKG}
-
+      echo "Custom pkg Done"
 fi
 
 
