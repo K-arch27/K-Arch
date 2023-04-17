@@ -506,6 +506,7 @@ function rootpartition() {
     kernelselect
     
       #make sure pacman is fine before checking for packages
+    zenity --info --text="Preparing Pacman Database for packages" --title="Preparing pacman"&
     pacman-key --init
     pacman-key --populate archlinux
     pacman -Sy archlinux-keyring --needed --noconfirm
