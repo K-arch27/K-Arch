@@ -46,7 +46,7 @@ env:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  #startup_mode: Windowed
+  startup_mode: Maximized
   # Window title
   #title: Alacritty
   # Window class (Linux/BSD only):
