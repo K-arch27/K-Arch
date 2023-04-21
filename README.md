@@ -11,6 +11,16 @@
 2. Clone this repo
 3. Use mkarchiso inside the repo to build the iso
 
+### -- Important Note --
+
+If using the layout only those modification need to be done at the end of your instal : 
+
+# make it subvolume not be hardcoded in grub & fstab making bootable snaps and rollback easy to manage
+sed -i 's/rootflags=subvol=${rootsubvol}//' /etc/grub.d/10_linux
+sed -i 's/rootflags=subvol=${rootsubvol}//' /etc/grub.d/20_linux_xen
+sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
+
+
 ### -- Features --
 
 - Installer only work for UEFI for now (make sure to have an Efi partition and a Root partition , the rest is optionnal)
