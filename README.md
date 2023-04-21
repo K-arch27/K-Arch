@@ -13,7 +13,7 @@
 
 ### -- Important Note --
 
-If using the layout only those modification need to be done at the end of your instal : 
+If using the layout only those modification need to be done at the end of your install : 
 
 #make subvolumes not be hardcoded in grub & fstab making bootable snaps and rollback easy to manage
 
