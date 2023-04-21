@@ -15,7 +15,7 @@
 
 If using the layout only those modification need to be done at the end of your instal : 
 
-#make it subvolume not be hardcoded in grub & fstab making bootable snaps and rollback easy to manage
+#make subvolumes not be hardcoded in grub & fstab making bootable snaps and rollback easy to manage
 
 sed -i 's/rootflags=subvol=${rootsubvol}//' /etc/grub.d/10_linux
 
