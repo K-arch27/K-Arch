@@ -499,7 +499,7 @@ function rootpartition() {
     swappartition
     homepartition
     rootpartition
-    if [ FIRMWARE_TYPE = "BIOS"]; then
+    if [ FIRMWARE_TYPE = "BIOS" ]; then
     rootdevice=$(lsblk --noheadings --output pkname "${partition3}")
     set_option ROOTDEV $rootdevice
     fi
