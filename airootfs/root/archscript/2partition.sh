@@ -54,7 +54,7 @@ chattr +C /mnt/@/var/tmp
 	mkdir /mnt/var/tmp
 	mkdir /mnt/home
 	
-	if [ FIRMWARE_TYPE = "UEFI"]; then
+	if [ FIRMWARE_TYPE = "UEFI" ]; then
 	mkdir /mnt/boot/efi
 	fi
 
@@ -70,7 +70,7 @@ chattr +C /mnt/@/var/tmp
     mount UUID=${ROOTUUID} -o noatime,ssd,commit=120,subvol=@/var/spool,nodatacow /mnt/var/spool
     mount UUID=${ROOTUUID} -o noatime,ssd,commit=120,subvol=@/var/tmp,nodatacow /mnt/var/tmp
    
-   if [ FIRMWARE_TYPE = "UEFI"]; then
+   if [ FIRMWARE_TYPE = "UEFI" ]; then
    
    	mount UUID=${EFIUUID} /mnt/boot/efi
     
