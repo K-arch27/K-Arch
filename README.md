@@ -62,7 +62,7 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 ### -- To do --
 
-~~ Make it work with Bios ~~
+~~Make it work with Bios~~
 
 add luks encryption option
 
