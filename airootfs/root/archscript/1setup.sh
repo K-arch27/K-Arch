@@ -486,14 +486,7 @@ function rootpartition() {
 
     #Executing this script functions
     
-    keymap
-    userinfo
-    userpass
-    rootpass
-    myhostname
-    timezone
-    localeselect
-    lsblk
+    keymap    
     if [ "$firmtype" = "UEFI" ]; then
     efipartition
     efiformat
@@ -503,12 +496,19 @@ function rootpartition() {
     swappartition
     homepartition
     rootpartition
+    userinfo
+    userpass
+    rootpass
+    myhostname
+    timezone
+    localeselect
+    lsblk
     loginshell
     desktopenv
     kernelselect
     
       #make sure pacman is fine before checking for packages
-    zenity --info --text="Preparing Pacman Database for packages" --title="Preparing pacman" --timeout=10&
+    zenity --info --text="Preparing Pacman and the Keyring please wait" --title="Pacman & Keyring" --timeout=15&
     pacman-key --init
     pacman-key --populate archlinux
     pacman -Sy archlinux-keyring --needed --noconfirm
@@ -524,3 +524,4 @@ function rootpartition() {
     chaorepo
     blackarch
     reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+    zenity --info --text="The System Will Now install according to the selected options" --title="Installing" --timeout=15&
