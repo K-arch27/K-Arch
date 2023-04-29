@@ -4,11 +4,6 @@
 # like timezone, keyboard layout,
 # user name, password, etc.
 
-
-
-
-
-
 # set up a config file
 CONFIG_FILE=/root/archscript/config.sh
 source /root/archscript/config.sh
