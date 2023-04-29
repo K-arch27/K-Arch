@@ -474,6 +474,10 @@ function rootpartition() {
     mkfs.btrfs -L ROOT -m single -f $partition3
     uuid3=$(blkid -o value -s UUID $partition3)
     set_option ROOTUUID $uuid3
+    if [ FIRMWARE_TYPE = "BIOS" ]; then
+    rootdevice=$(lsblk --noheadings --output pkname "${partition3}")
+    set_option ROOTDEV $rootdevice
+    fi
 }
 
 
@@ -499,10 +503,6 @@ function rootpartition() {
     swappartition
     homepartition
     rootpartition
-    if [ FIRMWARE_TYPE = "BIOS" ]; then
-    rootdevice=$(lsblk --noheadings --output pkname "${partition3}")
-    set_option ROOTDEV $rootdevice
-    fi
     loginshell
     desktopenv
     kernelselect
