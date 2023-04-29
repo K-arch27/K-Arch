@@ -204,7 +204,7 @@ function rootpartition() {
     partition_check
     partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
     clear
-    if [ FIRMWARE_TYPE = "UEFI"]; then
+    if [ FIRMWARE_TYPE = "UEFI" ]; then
     lsblk
     efipartition
     efiformat
