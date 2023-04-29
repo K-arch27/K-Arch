@@ -68,6 +68,8 @@ Add auto-Partitionning for single Drive
 
 add luks encryption option
 
+Add More helpful prompt
+
 Make it nicer looking
 
 more ..?
