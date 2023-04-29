@@ -27,6 +27,7 @@ function partition_check {
         gparted &
         while pgrep gparted >/dev/null; do sleep 1; done
     fi
+    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
 }
 
 
@@ -478,10 +479,7 @@ function rootpartition() {
 
 
     partition_check
-    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
 
-  
-    
     #Executing this script functions
     
     keymap
