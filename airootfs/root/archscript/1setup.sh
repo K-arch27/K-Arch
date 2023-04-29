@@ -474,10 +474,9 @@ function rootpartition() {
     mkfs.btrfs -L ROOT -m single -f $partition3
     uuid3=$(blkid -o value -s UUID $partition3)
     set_option ROOTUUID $uuid3
-    if [ firmtype = "BIOS" ]; then
-    rootdevice=$(lsblk --noheadings --output pkname "${partition3}")
+    rootdevice=$(lsblk --noheadings --output pkname "$partition3")
+    rootdevice="/dev/$rootdevice"
     set_option ROOTDEV "$rootdevice"
-    fi
 }
 
 
