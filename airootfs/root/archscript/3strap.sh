@@ -39,7 +39,7 @@ if [ "$SHELLCHOICE" = "fish" ]; then
 fi
 
 # Some Base packages Needed for Arch and Snapshots
-if [ FIRMWARE_TYPE = "UEFI"]; then
+if [ FIRMWARE_TYPE = "UEFI" ]; then
 
       pacstrap /mnt base base-devel linux-firmware e2fsprogs dosfstools grub grub-btrfs os-prober efibootmgr btrfs-progs ntfs-3g snapper snap-pac snap-pac-grub
    else
