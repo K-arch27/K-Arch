@@ -4,6 +4,14 @@ CONFIG_FILE=/root/archscript/config.sh
 source $SCRIPT_DIR/config.sh
 
 
+if [ -d /sys/firmware/efi ]; then
+  firmtype="UEFI"
+  set_option FIRMWARE_TYPE $firmtype
+else
+  firmtype="BIOS"
+  set_option FIRMWARE_TYPE $firmtype
+fi
+
 function partition_check {
     # Prompt the user with a clickable option to check if they are ready
     zenity --question --text="Are your partitions ready?" --ok-label="Yes" --cancel-label="No"
@@ -196,11 +204,13 @@ function rootpartition() {
     partition_check
     partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
     clear
+    if [ FIRMWARE_TYPE = "UEFI"]; then
     lsblk
     efipartition
     efiformat
     uuid2=$(blkid -o value -s UUID $partition2)
     set_option EFIUUID $uuid2
+    fi
     clear
     lsblk
     swappartition
