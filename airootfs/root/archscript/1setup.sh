@@ -6,17 +6,20 @@
 
 
 
-if [ -d /sys/firmware/efi ]; then
-  FIRMWARE_TYPE="UEFI"
-else
-  FIRMWARE_TYPE="BIOS"
-fi
 
 
 
 # set up a config file
 CONFIG_FILE=/root/archscript/config.sh
 source /root/archscript/config.sh
+
+if [ -d /sys/firmware/efi ]; then
+  firmtype="UEFI"
+  set_option FIRMWARE_TYPE $firmtype
+else
+  firmtype="BIOS"
+  set_option FIRMWARE_TYPE $firmtype
+fi
 
 
 
@@ -494,10 +497,12 @@ function rootpartition() {
     timezone
     localeselect
     lsblk
+    if [ FIRMWARE_TYPE = "UEFI"]; then
     efipartition
     efiformat
     uuid2=$(blkid -o value -s UUID $partition2)
     set_option EFIUUID $uuid2
+    fi
     swappartition
     homepartition
     rootpartition
