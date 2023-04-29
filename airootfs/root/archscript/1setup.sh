@@ -490,7 +490,7 @@ function rootpartition() {
     timezone
     localeselect
     lsblk
-    if [ FIRMWARE_TYPE = "UEFI"]; then
+    if [ FIRMWARE_TYPE = "UEFI" ]; then
     efipartition
     efiformat
     uuid2=$(blkid -o value -s UUID $partition2)
