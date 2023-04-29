@@ -87,6 +87,7 @@ function keymap() {
     if zenity --question --text="Your keyboard layout: ${keymap}. Is this correct?" --title="Keymap Confirmation"; then
        set_option KEYMAP $keymap
        loadkeys $keymap
+       xfconf-query -c keyboard-layout -p /Default/XkbLayout -s $keymap
     else
        keymap
     fi
