@@ -474,9 +474,9 @@ function rootpartition() {
     mkfs.btrfs -L ROOT -m single -f $partition3
     uuid3=$(blkid -o value -s UUID $partition3)
     set_option ROOTUUID $uuid3
-    if [ FIRMWARE_TYPE = "BIOS" ]; then
+    if [ firmtype = "BIOS" ]; then
     rootdevice=$(lsblk --noheadings --output pkname "${partition3}")
-    set_option ROOTDEV $rootdevice
+    set_option ROOTDEV "$rootdevice"
     fi
 }
 
@@ -494,7 +494,7 @@ function rootpartition() {
     timezone
     localeselect
     lsblk
-    if [ FIRMWARE_TYPE = "UEFI" ]; then
+    if [ firmtype = "UEFI" ]; then
     efipartition
     efiformat
     uuid2=$(blkid -o value -s UUID $partition2)
