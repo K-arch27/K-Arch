@@ -21,10 +21,33 @@ fi
 function auto_part {
     # Prompt the user with a clickable option to check if they want auto partitionning
     if [ zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No" ]; then
-    set_option AUTOPART yes
-    auto_part2   
+    
+       if zenity --question --text="Do you Want a Swap partition ?"; then
+          autoSwap="yes"
+       fi
+
+       if zenity --question --text="Do you Want a Separate Home partition ?"; then
+
+          # Ask user if they want Btrfs or Ext4 for Home
+          if zenity --question --text="What Filesystem do you want for /home ?" --ok-label="Btrfs" --cancel-label="Ext4"; then
+             autoHomeFs="btrfs"
+              
+          else
+              autoHomeFs="ext4"
+              
+          fi
+          autoHome="yes"
+       else
+
+          if zenity --question --text="Do you Want Home Included in Snapshots ? ?"; then
+            autoSnapHome="yes"
+          fi
+        
+       fi
+     
+      auto_part2   
     else
-    partition_check
+      partition_check
     fi
 }
 
@@ -43,13 +66,31 @@ done
  #confirm with the user that data will be Erased
  if [ zenity --question --text="Are you sure you want to Format the selected device : $selected_device , all data on that device is going to be Erased !" --ok-label="Yes" --cancel-label="No" ]; then
     
+    
+        
+    if [[ "$selected_device" =~ ^/dev/sd[a-z]$ ]]; then
+    # SATA disk
+      efi_partition="${selected_device}1"
+      swap_partition="${selected_device}2"
+      root_partition="${selected_device}3"
+      home_partition="${selected_device}4"
+    else
+    # NVMe disk
+      efi_partition="${selected_device}p1"
+      swap_partition="${selected_device}p2"
+      root_partition="${selected_device}p3"
+      home_partition="${selected_device}p4"
+    fi
+    
 
     if [ -d /sys/firmware/efi ]; then
-      parted /dev/sda1 mkpart "EFI system partition" fat32 1MiB 301MiB
-      parted /dev/sda2 mkpart "swap partition" linux-swap 301MiB 4.3GiB
-      parted /dev/sda3 mkpart "root partition" ext4 4.3GiB 24.3GiB
+      parted "$selected_device" mklabel gpt
+      parted "${selected_device}1" mkpart "EFI system partition" fat32 1MiB 513MiB
+      parted /dev/sda2 mkpart "swap partition" linux-swap 513MiB 4.5GiB
+      parted /dev/sda3 mkpart "root partition" ext4 4.5GiB 24.5GiB
       parted /dev/sda4 mkpart "home partition" ext4 24.3GiB 100%
-    else   
+    else
+      parted "$disk" mklabel msdos
       parted /dev/sda2 mkpart "swap partition" linux-swap 301MiB 4.3GiB
       parted /dev/sda3 mkpart "root partition" ext4 4.3GiB 24.3GiB
       parted /dev/sda4 mkpart "home partition" ext4 24.3GiB 100%
