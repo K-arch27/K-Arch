@@ -18,6 +18,48 @@ fi
 
 
 
+function auto_part {
+    # Prompt the user with a clickable option to check if they want auto partitionning
+    if [ zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No" ]; then
+    set_option AUTOPART yes
+    auto_part2   
+    else
+    partition_check
+    fi
+}
+
+
+
+function auto_part2 {
+
+devices=$(lsblk -rndo NAME)
+options=()
+for device in $devices; do
+    options+=("$device")
+done
+  #choose a device to partition
+ selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
+ selected_device="/dev/$selected_device"
+ #confirm with the user that data will be Erased
+ if [ zenity --question --text="Are you sure you want to Format the selected device : $selected_device , all data on that device is going to be Erased !" --ok-label="Yes" --cancel-label="No" ]; then
+    
+
+    if [ -d /sys/firmware/efi ]; then
+      parted /dev/sda1 mkpart "EFI system partition" fat32 1MiB 301MiB
+      parted /dev/sda2 mkpart "swap partition" linux-swap 301MiB 4.3GiB
+      parted /dev/sda3 mkpart "root partition" ext4 4.3GiB 24.3GiB
+      parted /dev/sda4 mkpart "home partition" ext4 24.3GiB 100%
+    else   
+      parted /dev/sda2 mkpart "swap partition" linux-swap 301MiB 4.3GiB
+      parted /dev/sda3 mkpart "root partition" ext4 4.3GiB 24.3GiB
+      parted /dev/sda4 mkpart "home partition" ext4 24.3GiB 100%
+    fi
+    
+ fi
+}
+
+
+
 function partition_check {
     # Prompt the user with a clickable option to check if they are ready
     zenity --question --text="Are your partitions ready?" --ok-label="Yes" --cancel-label="No"
