@@ -56,6 +56,8 @@ function auto_part {
        fi
      
       auto_part2   
+    else
+    autoPart="no"
     fi
 }
 
@@ -930,20 +932,21 @@ function rootpartition() {
 
     #Executing this script functions
     
-    keymap    
-    if [ "$firmtype" = "UEFI" ]; then
+       
+    if [ "$autoPart" = "no" ]; then
 
-        if [ "$firmtype" = "UEFI" ]; then
+      if [ "$firmtype" = "UEFI" ]; then
         efipartition
         efiformat
         uuid2=$(blkid -o value -s UUID $partition2)
         set_option EFIUUID $uuid2
-        fi
-    swappartition
-    homepartition
-    rootpartition
-    fi
+      fi
+      swappartition
+      homepartition
+      rootpartition
     
+    fi
+    keymap 
     userinfo
     userpass
     rootpass
