@@ -20,7 +20,7 @@ fi
 
 function auto_part () {
     # Prompt the user with a clickable option to check if they want auto partitionning
-    if [ zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No" ]; then
+    if zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No"; then
       
 
       autoPart="yes"
