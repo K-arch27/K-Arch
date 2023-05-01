@@ -18,7 +18,7 @@ fi
 
 
 
-function auto_part {
+function auto_part () {
     # Prompt the user with a clickable option to check if they want auto partitionning
     if [ zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No" ]; then
       
@@ -67,7 +67,7 @@ function auto_part {
 
 
 
-function auto_part2 {
+function auto_part2 () {
 
 devices=$(lsblk -rndo NAME)
 options=()
@@ -947,7 +947,7 @@ function rootpartition() {
 
 
     #Executing this script functions
-    auto_part 
+    auto_part
     
     if [ "$autoPart" = "no" ]; then
       partition_check
