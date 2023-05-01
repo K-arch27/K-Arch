@@ -205,6 +205,7 @@ else
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
 
                   # Create swap partition
                   parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
@@ -297,6 +298,7 @@ else
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
 
                   # Create swap partition
                   parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
@@ -362,6 +364,7 @@ else
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
 
                   # Create root partition
                   parted -a opt $selected_device mkpart root ext4 513MiB 40.5GiB
@@ -433,7 +436,7 @@ else
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
-
+                  set_option EFIPART $efi_partition
                   # Create root partition
                   parted -a opt $selected_device mkpart root ext4 513MiB 100%
 
