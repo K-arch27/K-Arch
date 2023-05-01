@@ -13,7 +13,9 @@
 
 ### -- Important Note --
 
-If using the layout only those modification need to be done at the end of your install : 
+- 50Gb Device minimum for Automatic partitionning (Otherwise you need to make an EFI(if needed) and Root partition minimally yourself)
+
+- If using the layout only those modification need to be done at the end of your install : 
 
 #make subvolumes not be hardcoded in grub & fstab making bootable snaps and rollback easy to manage
 
