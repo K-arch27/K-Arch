@@ -200,7 +200,7 @@ else
       if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
               if [ -d /sys/firmware/efi ]; then
                   # Create partition table
-                  parted $selected_device mklabel gpt
+                  parted -s $selected_device mklabel gpt
 
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
@@ -249,7 +249,7 @@ else
 
 
                   # Create partition table
-                  parted $selected_device mklabel msdos
+                  parted -s $selected_device mklabel msdos
 
                   # Create swap partition
                   parted -a opt $selected_device mkpart primary linux-swap 1MiB 4.5GiB
@@ -292,7 +292,7 @@ else
           if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
               if [ -d /sys/firmware/efi ]; then
                   # Create partition table
-                  parted $selected_device mklabel gpt
+                  parted -s $selected_device mklabel gpt
 
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
@@ -328,7 +328,7 @@ else
               else
 
                   # Create partition table
-                  parted $selected_device mklabel msdos
+                  parted -s $selected_device mklabel msdos
 
                   # Create swap partition
                   parted -a opt $selected_device mkpart primary linux-swap 1MiB 4.5GiB
@@ -357,7 +357,7 @@ else
           if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
               if [ -d /sys/firmware/efi ]; then
                   # Create partition table
-                  parted $selected_device mklabel gpt
+                  parted -s $selected_device mklabel gpt
 
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
@@ -395,7 +395,7 @@ else
               else
 
                   # Create partition table
-                  parted $selected_device mklabel msdos
+                  parted -s $selected_device mklabel msdos
 
                   # Create root partition
                   parted -a opt $selected_device mkpart primary ext4 1MiB 40GiB
@@ -428,7 +428,7 @@ else
           if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
               if [ -d /sys/firmware/efi ]; then
                   # Create partition table
-                  parted $selected_device mklabel gpt
+                  parted -s $selected_device mklabel gpt
 
                   # Create EFI partition
                   parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
@@ -454,7 +454,7 @@ else
               else
 
                   # Create partition table
-                  parted $selected_device mklabel msdos
+                  parted -s $selected_device mklabel msdos
 
                   # Create root partition
                   parted -a opt $selected_device mkpart primary ext4 1MiB 100%
