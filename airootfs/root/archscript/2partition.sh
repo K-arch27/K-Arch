@@ -54,7 +54,7 @@ chattr +C /mnt/@/var/tmp
 	mkdir /mnt/var/tmp
 	mkdir /mnt/home
 	
-	if [ FIRMWARE_TYPE = "UEFI" ]; then
+	if [ FIRMWARE_TYPE == "UEFI" ]; then
 	mkdir /mnt/boot/efi
 	fi
 
