@@ -89,58 +89,7 @@ if [ "$DISK_SIZE" -lt "$REQUIRED_SIZE" ]; then
      auto_part
 else
     # Make Variable for partitioning
-  if [[ "$selected_device" =~ ^/dev/sd[a-z]$ ]]; then
-
-          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
-              # SATA disk
-              if [ -d /sys/firmware/efi ]; then
-                  efi_partition="${selected_device}1"
-                  swap_partition="${selected_device}2"
-                  root_partition="${selected_device}3"
-                  home_partition="${selected_device}4"
-              else
-                  swap_partition="${selected_device}1"
-                  root_partition="${selected_device}2"
-                  home_partition="${selected_device}3"
-              fi
-          fi   
-
-          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
-              # SATA disk
-              if [ -d /sys/firmware/efi ]; then
-                  efi_partition="${selected_device}1"
-                  swap_partition="${selected_device}2"
-                  root_partition="${selected_device}3"
-              else
-                  swap_partition="${selected_device}1"
-                  root_partition="${selected_device}2"
-              fi
-          fi   
-
-          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
-              # SATA disk
-              if [ -d /sys/firmware/efi ]; then
-                  efi_partition="${selected_device}1"
-                  root_partition="${selected_device}2"
-                  home_partition="${selected_device}3"
-              else
-                  root_partition="${selected_device}1"
-                  home_partition="${selected_device}2"
-              fi
-          fi   
-
-          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
-              # SATA disk
-              if [ -d /sys/firmware/efi ]; then
-                  efi_partition="${selected_device}1"
-                  root_partition="${selected_device}2"
-              else
-                  root_partition="${selected_device}1"
-              fi
-          fi   
-
-  else
-
+  if [[ "$selected_device" =~ ^/dev/nvme[0-9]n[0-9]$ ]]; then
 
           if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
               # NVME disk
@@ -188,6 +137,56 @@ else
               else
                   root_partition="${selected_device}p1"
               fi
+          fi   
+
+     else
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  swap_partition="${selected_device}2"
+                  root_partition="${selected_device}3"
+                  home_partition="${selected_device}4"
+              else
+                  swap_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+                  home_partition="${selected_device}3"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  swap_partition="${selected_device}2"
+                  root_partition="${selected_device}3"
+              else
+                  swap_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+                  home_partition="${selected_device}3"
+              else
+                  root_partition="${selected_device}1"
+                  home_partition="${selected_device}2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+              else
+                  root_partition="${selected_device}1"
+              fi
           fi
 
 
@@ -204,11 +203,11 @@ else
                   parted $selected_device mklabel gpt
 
                   # Create EFI partition
-                  parted -a opt $selected_device mkpart EFI fat32 1MiB 512MiB
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
 
                   # Create swap partition
-                  parted -a opt $selected_device mkpart swap linux-swap 512MiB 4.5GiB
+                  parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
 
                   # Create root partition
                   parted -a opt $selected_device mkpart root ext4 4.5GiB 44.5GiB
@@ -296,11 +295,11 @@ else
                   parted $selected_device mklabel gpt
 
                   # Create EFI partition
-                  parted -a opt $selected_device mkpart EFI fat32 1MiB 512MiB
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
 
                   # Create swap partition
-                  parted -a opt $selected_device mkpart swap linux-swap 512MiB 4.5GiB
+                  parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
 
                   # Create root partition
                   parted -a opt $selected_device mkpart root ext4 4.5GiB 100%
@@ -361,11 +360,11 @@ else
                   parted $selected_device mklabel gpt
 
                   # Create EFI partition
-                  parted -a opt $selected_device mkpart EFI fat32 1MiB 512MiB
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
 
                   # Create root partition
-                  parted -a opt $selected_device mkpart root ext4 512MiB 40.5GiB
+                  parted -a opt $selected_device mkpart root ext4 513MiB 40.5GiB
 
                   # Create home partition using the rest of the disk space
                   parted -a opt $selected_device mkpart home ext4 40.5GiB 100%
@@ -432,11 +431,11 @@ else
                   parted $selected_device mklabel gpt
 
                   # Create EFI partition
-                  parted -a opt $selected_device mkpart EFI fat32 1MiB 512MiB
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
                   parted $selected_device set 1 boot on
 
                   # Create root partition
-                  parted -a opt $selected_device mkpart root ext4 512MiB 100%
+                  parted -a opt $selected_device mkpart root ext4 513MiB 100%
 
                   #Formating Efi partition
                   mkfs.vfat -F32 ${efi_partition}
