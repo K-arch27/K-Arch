@@ -66,7 +66,7 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 ~~Make it work with Bios~~
 
-Add auto-Partitionning for single Drive
+~~Add auto-Partitionning for single Drive~~
 
 add luks encryption option
 
