@@ -76,7 +76,7 @@ chattr +C /mnt/@/var/tmp
     
     fi
     
-    if [ "$SWAPPART" = "yes" ]; then
+    if [ "$SWAPON" = "yes" ]; then
     
     	swapon UUID=${SWAPUUID}
     
