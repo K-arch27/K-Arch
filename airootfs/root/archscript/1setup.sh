@@ -46,7 +46,7 @@ function auto_part () {
           fi
 
        else
-
+          autoHome="no"
           if zenity --question --text="Do you Want Home Included in Snapshots ? ?"; then
             autoSnapHome="yes"
             set_option HOMESNAP $autoSnapHome
