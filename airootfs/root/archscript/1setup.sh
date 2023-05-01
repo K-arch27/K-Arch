@@ -196,7 +196,7 @@ else
 
 
    #confirm with the user that data will be Erased
-   if [ zenity --question --text="Are you sure you want to Format the selected device : $selected_device , all data on that device is going to be Erased !" --ok-label="Yes" --cancel-label="No" ]; then
+   if zenity --question --text="Are you sure you want to Format the selected device : $selected_device , all data on that device is going to be Erased !" --ok-label="Yes" --cancel-label="No"; then
 
       if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
               if [ -d /sys/firmware/efi ]; then
