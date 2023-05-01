@@ -24,10 +24,16 @@ function auto_part {
         autoPart="yes"
        if zenity --question --text="Do you Want a Swap partition ?"; then
           autoSwap="yes"
+          set_option SWAPON $autoSwap
+          else
+          autoSwap="no"
+          set_option SWAPON $autoSwap
        fi
 
        if zenity --question --text="Do you Want a Separate Home partition ?"; then
-
+       
+          set_option HOMEPART "yes"
+          autoHome="yes"
           # Ask user if they want Btrfs or Ext4 for Home
           if zenity --question --text="What Filesystem do you want for /home ?" --ok-label="Btrfs" --cancel-label="Ext4"; then
              autoHomeFs="btrfs"
@@ -36,11 +42,15 @@ function auto_part {
               autoHomeFs="ext4"
               
           fi
-          autoHome="yes"
+
        else
 
           if zenity --question --text="Do you Want Home Included in Snapshots ? ?"; then
             autoSnapHome="yes"
+            set_option HOMESNAP $autoSnapHome
+            else
+            autoSnapHome="no"
+            set_option HOMESNAP $autoSnapHome
           fi
         
        fi
@@ -197,7 +207,6 @@ fi
                 set_option EFIUUID $uuid2
                 
                 #Formating Swap partition
-                set_option SWAPON "yes"
                 set_option SWAPPART "$swap_partition"
                 mkswap "$swap_partition"
                 uuid4=$(blkid -o value -s UUID "$swap_partition")
@@ -218,8 +227,6 @@ fi
                  else
                 mkfs.ext4 -L HOME "$home_partition"
                 fi           
-                set_option HOMEPART "yes"
-                set_option HOMESNAP "no"
                 uuid5=$(blkid -o value -s UUID $home_partition)
                 set_option HOMEUUID $uuid5
                 
@@ -262,8 +269,6 @@ fi
                  else
                 mkfs.ext4 -L HOME "$home_partition"
                 fi           
-                set_option HOMEPART "yes"
-                set_option HOMESNAP "no"
                 uuid5=$(blkid -o value -s UUID $home_partition)
                 set_option HOMEUUID $uuid5
             
@@ -291,7 +296,6 @@ fi
                 set_option EFIUUID $uuid2
                 
                 #Formating Swap partition
-                set_option SWAPON "yes"
                 set_option SWAPPART "$swap_partition"
                 mkswap "$swap_partition"
                 uuid4=$(blkid -o value -s UUID "$swap_partition")
@@ -319,7 +323,6 @@ fi
                 parted -a opt $selected_device mkpart primary ext4 4.5GiB 100%
                 
                 #Formating Swap partition
-                set_option SWAPON "yes"
                 set_option SWAPPART "$swap_partition"
                 mkswap "$swap_partition"
                 uuid4=$(blkid -o value -s UUID "$swap_partition")
@@ -372,8 +375,6 @@ fi
                  else
                 mkfs.ext4 -L HOME "$home_partition"
                 fi           
-                set_option HOMEPART "yes"
-                set_option HOMESNAP "no"
                 uuid5=$(blkid -o value -s UUID $home_partition)
                 set_option HOMEUUID $uuid5
             
@@ -403,8 +404,6 @@ fi
                  else
                 mkfs.ext4 -L HOME "$home_partition"
                 fi           
-                set_option HOMEPART "yes"
-                set_option HOMESNAP "no"
                 uuid5=$(blkid -o value -s UUID $home_partition)
                 set_option HOMEUUID $uuid5
             
