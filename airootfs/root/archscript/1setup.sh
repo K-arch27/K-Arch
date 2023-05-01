@@ -78,12 +78,15 @@ done
   #choose a device to partition
  selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
  selected_device="/dev/$selected_device"
+ 
  # Check if disk has at least 50GB
  DISK_SIZE=$(blockdev --getsize64 "$selected_device")
  REQUIRED_SIZE=$((50*1024*1024*1024)) # 50GB in bytes
+ 
 if [ "$DISK_SIZE" -lt "$REQUIRED_SIZE" ]; then
-     echo "Error: Disk size is less than 50GB"
      autoPart="no"
+     zenity --error --text="Error: Selected device size is less than 50GB, Use manual partitionning or select another Device"
+     auto_part
 else
     # Make Variable for partitioning
   if [[ "$selected_device" =~ ^/dev/sd[a-z]$ ]]; then
@@ -939,13 +942,15 @@ function rootpartition() {
 
 
 
-    partition_check
+
+
+
 
     #Executing this script functions
+    auto_part 
     
-       
     if [ "$autoPart" = "no" ]; then
-
+      partition_check
       if [ "$firmtype" = "UEFI" ]; then
         efipartition
         efiformat
@@ -954,9 +959,9 @@ function rootpartition() {
       fi
       swappartition
       homepartition
-      rootpartition
-    
+      rootpartition 
     fi
+    
     keymap 
     userinfo
     userpass
