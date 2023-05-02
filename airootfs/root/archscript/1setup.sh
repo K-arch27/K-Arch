@@ -18,6 +18,472 @@ fi
 
 
 
+function auto_part () {
+    # Prompt the user with a clickable option to check if they want auto partitionning
+    if zenity --question --text="Do you want the script to Erase and Partition a Device for you ?" --ok-label="Yes" --cancel-label="No"; then
+      
+
+      autoPart="yes"
+       if zenity --question --text="Do you Want a Swap partition ?"; then
+          autoSwap="yes"
+          set_option SWAPON $autoSwap
+          else
+          autoSwap="no"
+          set_option SWAPON $autoSwap
+       fi
+
+       if zenity --question --text="Do you Want a Separate Home partition ?"; then
+       
+          set_option HOMEPART "yes"
+          set_option HOMESNAP "no"
+          autoHome="yes"
+          # Ask user if they want Btrfs or Ext4 for Home
+          if zenity --question --text="What Filesystem do you want for /home ?" --ok-label="Btrfs" --cancel-label="Ext4"; then
+             autoHomeFs="btrfs"
+              
+          else
+              autoHomeFs="ext4"
+              
+          fi
+
+       else
+          set_option HOMEPART "no"
+          autoHome="no"
+          if zenity --question --text="Do you Want Home Included in Snapshots ? ?"; then
+            autoSnapHome="yes"
+            set_option HOMESNAP $autoSnapHome
+            else
+            autoSnapHome="no"
+            set_option HOMESNAP $autoSnapHome
+          fi
+        
+       fi
+     
+      auto_part2   
+      
+      
+    else
+    autoPart="no"
+    fi
+}
+
+
+
+function auto_part2 () {
+
+devices=$(lsblk -rndo NAME)
+options=()
+for device in $devices; do
+    if [[ $device != "sr0" && $device != "loop0" ]]; then
+        options+=("$device")
+    fi
+done
+
+  #choose a device to partition
+ selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
+ selected_device="/dev/$selected_device"
+ 
+ # Check if disk has at least 50GB
+ DISK_SIZE=$(blockdev --getsize64 "$selected_device")
+ REQUIRED_SIZE=$((50*1024*1024*1024)) # 50GB in bytes
+ 
+if [ "$DISK_SIZE" -lt "$REQUIRED_SIZE" ]; then
+     autoPart="no"
+     zenity --error --text="Error: Selected device size is less than 50GB, Use manual partitionning or select another Device"
+     auto_part
+else
+    # Make Variable for partitioning
+  if [[ "$selected_device" =~ ^/dev/nvme[0-9]n[0-9]$ ]]; then
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
+              # NVME disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}p1"
+                  swap_partition="${selected_device}p2"
+                  root_partition="${selected_device}p3"
+                  home_partition="${selected_device}p4"
+              else
+                  swap_partition="${selected_device}p1"
+                  root_partition="${selected_device}p2"
+                  home_partition="${selected_device}p3"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
+              # NVME disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}p1"
+                  swap_partition="${selected_device}p2"
+                  root_partition="${selected_device}p3"
+              else
+                  swap_partition="${selected_device}p1"
+                  root_partition="${selected_device}p2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
+              # NVME disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}p1"
+                  root_partition="${selected_device}p2"
+                  home_partition="${selected_device}p3"
+              else
+                  root_partition="${selected_device}p1"
+                  home_partition="${selected_device}p2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
+              # NVME disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}p1"
+                  root_partition="${selected_device}p2"
+              else
+                  root_partition="${selected_device}p1"
+              fi
+          fi   
+
+     else
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  swap_partition="${selected_device}2"
+                  root_partition="${selected_device}3"
+                  home_partition="${selected_device}4"
+              else
+                  swap_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+                  home_partition="${selected_device}3"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  swap_partition="${selected_device}2"
+                  root_partition="${selected_device}3"
+              else
+                  swap_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+                  home_partition="${selected_device}3"
+              else
+                  root_partition="${selected_device}1"
+                  home_partition="${selected_device}2"
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
+              # sata disk
+              if [ -d /sys/firmware/efi ]; then
+                  efi_partition="${selected_device}1"
+                  root_partition="${selected_device}2"
+              else
+                  root_partition="${selected_device}1"
+              fi
+          fi
+
+
+  fi
+
+
+
+   #confirm with the user that data will be Erased
+   if zenity --question --text="Are you sure you want to Format the selected device : $selected_device , all data on that device is going to be Erased !" --ok-label="Yes" --cancel-label="No"; then
+
+      if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "yes" ]; then
+              if [ -d /sys/firmware/efi ]; then
+                  # Create partition table
+                  parted -s $selected_device mklabel gpt
+
+                  # Create EFI partition
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
+                  parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
+
+                  # Create swap partition
+                  parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart root ext4 4.5GiB 44.5GiB
+
+                  # Create home partition using the rest of the disk space
+                  parted -a opt $selected_device mkpart home ext4 44.5GiB 100%
+
+                  #Formating Efi partition
+                  mkfs.vfat -F32 ${efi_partition}
+                  uuid2=$(blkid -o value -s UUID $efi_partition)
+                  set_option EFIUUID $uuid2
+
+                  #Formating Swap partition
+                  set_option SWAPPART "$swap_partition"
+                  mkswap "$swap_partition"
+                  uuid4=$(blkid -o value -s UUID "$swap_partition")
+                  set_option SWAPUUID "$uuid4"
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+                  #Formating Home partition
+                  if [ "$autoHomeFs" = "btrfs" ]; then
+                  mkfs.btrfs -L HOME -m single -f "$home_partition"
+                   else
+                  mkfs.ext4 -L HOME "$home_partition"
+                  fi           
+                  uuid5=$(blkid -o value -s UUID $home_partition)
+                  set_option HOMEUUID $uuid5
+
+
+              else
+
+
+                  # Create partition table
+                  parted -s $selected_device mklabel msdos
+
+                  # Create swap partition
+                  parted -a opt $selected_device mkpart primary linux-swap 1MiB 4.5GiB
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart primary ext4 4.5GiB 44.5GiB
+
+                  # Create home partition using the rest of the disk space
+                  parted -a opt $selected_device mkpart primary ext4 44.5GiB 100%
+
+
+                  #Formating Swap partition
+                  set_option SWAPON "yes"
+                  set_option SWAPPART "$swap_partition"
+                  mkswap "$swap_partition"
+                  uuid4=$(blkid -o value -s UUID "$swap_partition")
+                  set_option SWAPUUID "$uuid4"
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+                  #Formating Home partition
+                  if [ "$autoHomeFs" = "btrfs" ]; then
+                  mkfs.btrfs -L HOME -m single -f "$home_partition"
+                   else
+                  mkfs.ext4 -L HOME "$home_partition"
+                  fi           
+                  uuid5=$(blkid -o value -s UUID $home_partition)
+                  set_option HOMEUUID $uuid5
+
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "yes" ]; then
+              if [ -d /sys/firmware/efi ]; then
+                  # Create partition table
+                  parted -s $selected_device mklabel gpt
+
+                  # Create EFI partition
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
+                  parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
+
+                  # Create swap partition
+                  parted -a opt $selected_device mkpart swap linux-swap 513MiB 4.5GiB
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart root ext4 4.5GiB 100%
+
+                  #Formating Efi partition
+                  mkfs.vfat -F32 ${efi_partition}
+                  uuid2=$(blkid -o value -s UUID $efi_partition)
+                  set_option EFIUUID $uuid2
+
+                  #Formating Swap partition
+                  set_option SWAPPART "$swap_partition"
+                  mkswap "$swap_partition"
+                  uuid4=$(blkid -o value -s UUID "$swap_partition")
+                  set_option SWAPUUID "$uuid4"
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+
+              else
+
+                  # Create partition table
+                  parted -s $selected_device mklabel msdos
+
+                  # Create swap partition
+                  parted -a opt $selected_device mkpart primary linux-swap 1MiB 4.5GiB
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart primary ext4 4.5GiB 100%
+
+                  #Formating Swap partition
+                  set_option SWAPPART "$swap_partition"
+                  mkswap "$swap_partition"
+                  uuid4=$(blkid -o value -s UUID "$swap_partition")
+                  set_option SWAPUUID "$uuid4"
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+              fi
+          fi   
+
+          if [ "$autoHome" = "yes" ] && [ "$autoSwap" = "no" ]; then
+              if [ -d /sys/firmware/efi ]; then
+                  # Create partition table
+                  parted -s $selected_device mklabel gpt
+
+                  # Create EFI partition
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
+                  parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart root ext4 513MiB 40.5GiB
+
+                  # Create home partition using the rest of the disk space
+                  parted -a opt $selected_device mkpart home ext4 40.5GiB 100%
+
+                  #Formating Efi partition
+                  mkfs.vfat -F32 ${efi_partition}
+                  uuid2=$(blkid -o value -s UUID $efi_partition)
+                  set_option EFIUUID $uuid2
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+                  #Formating Home partition
+                  if [ "$autoHomeFs" = "btrfs" ]; then
+                  mkfs.btrfs -L HOME -m single -f "$home_partition"
+                   else
+                  mkfs.ext4 -L HOME "$home_partition"
+                  fi           
+                  uuid5=$(blkid -o value -s UUID $home_partition)
+                  set_option HOMEUUID $uuid5
+
+              else
+
+                  # Create partition table
+                  parted -s $selected_device mklabel msdos
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart primary ext4 1MiB 40GiB
+
+                  # Create home partition using the rest of the disk space
+                  parted -a opt $selected_device mkpart primary ext4 40GiB 100%
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+                  #Formating Home partition
+                  if [ "$autoHomeFs" = "btrfs" ]; then
+                  mkfs.btrfs -L HOME -m single -f "$home_partition"
+                   else
+                  mkfs.ext4 -L HOME "$home_partition"
+                  fi           
+                  uuid5=$(blkid -o value -s UUID $home_partition)
+                  set_option HOMEUUID $uuid5
+
+
+              fi
+          fi   
+
+          if [ "$autoHome" = "no" ] && [ "$autoSwap" = "no" ]; then
+              if [ -d /sys/firmware/efi ]; then
+                  # Create partition table
+                  parted -s $selected_device mklabel gpt
+
+                  # Create EFI partition
+                  parted -a opt $selected_device mkpart EFI fat32 1MiB 513MiB
+                  parted $selected_device set 1 boot on
+                  set_option EFIPART $efi_partition
+                  # Create root partition
+                  parted -a opt $selected_device mkpart root ext4 513MiB 100%
+
+                  #Formating Efi partition
+                  mkfs.vfat -F32 ${efi_partition}
+                  uuid2=$(blkid -o value -s UUID $efi_partition)
+                  set_option EFIUUID $uuid2
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+              else
+
+                  # Create partition table
+                  parted -s $selected_device mklabel msdos
+
+                  # Create root partition
+                  parted -a opt $selected_device mkpart primary ext4 1MiB 100%
+
+                  #Formating Root Partition
+                  set_option ROOTPART "$root_partition"
+                  mkfs.btrfs -L ROOT -m single -f $root_partition
+                  uuid3=$(blkid -o value -s UUID $root_partition)
+                  set_option ROOTUUID $uuid3
+                  rootdevice=$(lsblk --noheadings --output pkname "$root_partition")
+                  rootdevice="/dev/$rootdevice"
+                  set_option ROOTDEV "$rootdevice"
+
+              fi
+          fi
+
+   fi
+fi  
+}
+
+
+
 function partition_check {
     # Prompt the user with a clickable option to check if they are ready
     zenity --question --text="Are your partitions ready?" --ok-label="Yes" --cancel-label="No"
@@ -316,7 +782,7 @@ function swappartition() {
     
     # Ask user if they have a Swap partition
     if zenity --question --text="Do you have a Swap partition?"; then
-        set_option SWAPPART "yes"
+        set_option SWAPON "yes"
         swappartition2
     else
         zenity --info --text="No Swap partition will be used." 2>/dev/null
@@ -482,20 +948,27 @@ function rootpartition() {
 
 
 
-    partition_check
+
+
+
 
     #Executing this script functions
+    auto_part
     
-    keymap    
-    if [ "$firmtype" = "UEFI" ]; then
-    efipartition
-    efiformat
-    uuid2=$(blkid -o value -s UUID $partition2)
-    set_option EFIUUID $uuid2
+    if [ "$autoPart" = "no" ]; then
+      partition_check
+      if [ "$firmtype" = "UEFI" ]; then
+        efipartition
+        efiformat
+        uuid2=$(blkid -o value -s UUID $partition2)
+        set_option EFIUUID $uuid2
+      fi
+      swappartition
+      homepartition
+      rootpartition 
     fi
-    swappartition
-    homepartition
-    rootpartition
+    
+    keymap 
     userinfo
     userpass
     rootpass
