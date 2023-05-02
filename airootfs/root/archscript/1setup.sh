@@ -35,6 +35,7 @@ function auto_part () {
        if zenity --question --text="Do you Want a Separate Home partition ?"; then
        
           set_option HOMEPART "yes"
+          set_option HOMESNAP "no"
           autoHome="yes"
           # Ask user if they want Btrfs or Ext4 for Home
           if zenity --question --text="What Filesystem do you want for /home ?" --ok-label="Btrfs" --cancel-label="Ext4"; then
