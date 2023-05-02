@@ -74,7 +74,9 @@ function auto_part2 () {
 devices=$(lsblk -rndo NAME)
 options=()
 for device in $devices; do
-    options+=("$device")
+    if [[ $device != "sr0" && $device != "loop0" ]]; then
+        options+=("$device")
+    fi
 done
 
   #choose a device to partition
