@@ -493,7 +493,7 @@ function partition_check {
         gparted &
         while pgrep gparted >/dev/null; do sleep 1; done
     fi
-    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
+    partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
 }
 
 
