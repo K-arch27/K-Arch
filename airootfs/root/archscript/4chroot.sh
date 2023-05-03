@@ -81,16 +81,8 @@ if [ "$DECHOICE" = "kaidaplasma" ]; then
 
       git clone https://github.com/k-arch27/dotfiles
       cp -a ./dotfiles/. /home/$USERNAME/.config/
+      chown -R $USERNAME /home/$USERNAME/.config/
       rm -Rfd ./dotfiles
-
-
-   elif [ "$DECHOICE" = "fullplasma" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "minimalplasma" ]; then
-
-      systemctl enable sddm
 
    elif [ "$DECHOICE" = "gnome" ]; then
 
@@ -100,52 +92,14 @@ if [ "$DECHOICE" = "kaidaplasma" ]; then
 
       systemctl enable gdm
       
-   elif [ "$DECHOICE" = "xfce" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "fullxfce" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "MATE" ]; then
-
-      systemctl enable sddm
-      
-   elif [ "$DECHOICE" = "fullMATE" ]; then
-
-      systemctl enable sddm
-      
-   elif [ "$DECHOICE" = "cinnamon" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "deepin" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "fulldeepin" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "lxqt" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "i3gaps" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "xmonad" ]; then
-
-      systemctl enable sddm
-
-   elif [ "$DECHOICE" = "openbox" ]; then
-
-      systemctl enable sddm
-   else
-
+   elif [ "$DECHOICE" = "none" ]; then
+   
       echo -ne "no Gui was choosen"
+
+   else
+   
+      systemctl enable sddm
+
 
 fi
 
