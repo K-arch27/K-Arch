@@ -20,30 +20,13 @@ echo "LANG=${LANGLOCAL}" > /etc/locale.conf
 echo -ne "
 
 -------------------------------------------------------------------------
-        Updating full system and Setting up octopi and Aur Helper
+        Updating full system & And Snapper Config
 -------------------------------------------------------------------------
 "
 
-    if [ "$CHAOCHOICE" = "yes" ]; then
-
-#adding chaotic-Aur and Black Arch Repo
-pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-pacman-key --lsign-key FBA220DFC880C036
-pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
-cat /root/archscript/mirror.txt >> /etc/pacman.conf
-pacman -Sy --noconfirm
-fi
-
-    if [ "$BLACKCHOICE" = "yes" ]; then
-
-    curl -O https://blackarch.org/strap.sh
-    chmod +x strap.sh
-    bash strap.sh
-    rm /strap.sh
-    pacman -Syyu --noconfirm
-    fi
 
 
+pacman -Syyu --noconfirm
 
 
 #Changing The timeline auto-snap
