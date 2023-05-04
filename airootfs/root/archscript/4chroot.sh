@@ -2,20 +2,18 @@
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $SCRIPT_DIR/config.sh
 
-clear
-logo
-
-
 
 echo -ne "
 
 -------------------------------------------------------------------------
-                    Setup Language to EN and set Admin rights
+                    Setup Locale, Keymaps and sudo rights
 -------------------------------------------------------------------------
 "
+
 sed -i "s/^#${LANGLOCAL}/${LANGLOCAL}/" /etc/locale.gen
 locale-gen
-
+echo KEYMAP=$KEYMAP > /etc/vconsole.conf
+echo "LANG=${LANGLOCAL}" > /etc/locale.conf
 
 systemctl enable --now NetworkManager
 
@@ -30,6 +28,7 @@ sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 mkinitcpio -P
 
 
+echo -ne "
 -------------------------------------------------------------------------
                     Setup hostname and timezone
 -------------------------------------------------------------------------
@@ -37,10 +36,6 @@ mkinitcpio -P
 echo "$NAME_OF_MACHINE" > /etc/hostname
 ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 hwclock --systohc 
-# Set keymaps
-echo KEYMAP=$KEYMAP > /etc/vconsole.conf
-loadkeys $KEYMAP
-echo "LANG=${LANGLOCAL}" > /etc/locale.conf
 
 
 
@@ -70,9 +65,6 @@ echo "$USERNAME:$PASSWORD" | chpasswd
 echo "root:$ROOTPASSWORD" | chpasswd
 
 
-
-clear
-logo
 echo -ne "
 -------------------------------------------------------------------------
                   Display manager service activation
@@ -178,7 +170,6 @@ fi
 
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 
-
 sed -i 's/rootflags=subvol=${rootsubvol}//' /etc/grub.d/10_linux
 sed -i 's/rootflags=subvol=${rootsubvol}//' /etc/grub.d/20_linux_xen
 sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
@@ -186,21 +177,10 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-
-
-logo
 echo -ne "
-
-
-
 -------------------------------------------------------------------------
         Updating full system 
 -------------------------------------------------------------------------
 "
 
-
 pacman -Syyu --noconfirm
-
-
-
-
