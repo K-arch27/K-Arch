@@ -19,7 +19,6 @@ echo -ne "
     chmod +x /root/archscript/2partition.sh
     chmod +x /root/archscript/3strap.sh
     chmod +x /root/archscript/4chroot.sh
-    chmod +x /root/archscript/5final.sh
 
 function StartingUp {
     # Define the options for the dropdown list
@@ -39,7 +38,7 @@ function StartingUp {
     ( bash /root/archscript/2partition.sh )|& tee /root/archscript/partition.log
     ( bash /root/archscript/3strap.sh )|& tee /root/archscript/strap.log
     ( arch-chroot /mnt /root/archscript/4chroot.sh )|& tee /mnt/root/archscript/chroot.log
-    ( arch-chroot /mnt /root/archscript/5final.sh )|& tee /mnt/root/archscript/final.log
+    
  zenity --info --title="Done !" --text="You can Now Reboot or Arch-Chroot to /mnt to set more things up manually" --ok-label="OK"
             ;;
         "Use the Btrfs Layout Tool only")
