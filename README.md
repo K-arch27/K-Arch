@@ -28,25 +28,19 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 ### -- Features --
 
-- Installer only work for UEFI for now (make sure to have an Efi partition and a Root partition , the rest is optionnal)
-
 - Live Environement Booting Xfce
 
-
-- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and make everything ready for a manual install
-
+- Installer can partition a device for you (50Gb Min.) Or you can choose already made partitions for the install
 
 - Gparted Included for ease of partitionning
 
+- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and make everything ready for a manual install
 
 - Firefox Included so the user can make some search on the different options
 
+- Auto-Installer custom options per user choices (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
 
-- Auto-Installer that prompt the User with some choice about the system they want (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
-
-
-- Possibility to add package of your choice during install
-
+- Possibility to add package of your choice during install (If pacman find them in the repo)
 
 - A btrfs layout working with snapper out of the box
 
@@ -54,7 +48,7 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 
 
-- Bootable snapshot
+- Bootable snapshot for easy rollback after booting them ( snapper rollback && grub-mkconfig -o /boot/grub/grub.cfg )
 
 ![image](https://user-images.githubusercontent.com/98610690/229261491-301400e0-7d50-4367-854f-f6c55053f999.png)
 
@@ -64,9 +58,9 @@ sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
 ### -- To do --
 
-~~Make it work with Bios~~
+~~Make it work with Bios~~ Done !
 
-~~Add auto-Partitionning for single Drive~~
+~~Add auto-Partitionning for single Drive~~ Done ! ( will add more customisation to this latter tho.)
 
 add luks encryption option
 
