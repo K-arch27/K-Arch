@@ -15,7 +15,9 @@ locale-gen
 echo KEYMAP=$KEYMAP > /etc/vconsole.conf
 echo "LANG=${LANGLOCAL}" > /etc/locale.conf
 
+if systemctl status NetworkManager >/dev/null 2>&1; then
 systemctl enable --now NetworkManager
+fi
 
 # Add sudo rights
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
