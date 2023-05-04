@@ -2,7 +2,7 @@
 
 ## My own Config for ArchIso Installing Arch with Btrfs
 
-### This Config has been modified to allow users to easily install Arch Linux with a Btrfs file system as the root file system, and with a pre-configured subvolume ready for use with the Snapper tool.
+### This Config has been modified to allow users to easily install Arch Linux with a Btrfs file system as the root file system, and with pre-configured subvolume ready for use with the Snapper tool.
 
 
 ### -- Build yourself --
