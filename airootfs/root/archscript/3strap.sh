@@ -3,24 +3,6 @@ SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/config.sh
 
 
-mkdir /mnt &>/dev/null # Hiding error message if any
-clear
-
-
-echo -ne "
-
--------------------------------------------------------------------------
-   █████╗ ██████╗  ██████╗██╗  ██╗  ██║
-  ██╔══██╗██╔══██╗██╔════╝██║  ██║  ██║
-  ███████║██████╔╝██║     ███████║  ██║
-  ██╔══██║██╔══██╗██║     ██╔══██║  ██║ 
-  ██║  ██║██║  ██║╚██████╗██║  ██║  ██║
-  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝  ╚═╝
--------------------------------------------------------------------------
-
-"
-
-
 echo -ne "
 -------------------------------------------------------------------------
                     Straping Setup 
@@ -67,9 +49,6 @@ if [ "$KERNELCHOICE" = "linux" ]; then
 
 fi
 
-#Optionnal but usefull packages (should be an option)
-
-pacstrap /mnt networkmanager sof-firmware man-db man-pages texinfo 
 
 if [ "$PKGWANT" = "yes" ]; then
 
@@ -86,7 +65,7 @@ fi
 #use command "kde" to start up kaidaplasma :/
 if [ "$DECHOICE" = "kaidaplasma" ]; then
       pacstrap /mnt  xorg xorg-server xorg-xinit plasma konsole dolphin dolphin-plugins ark kate kcalc kolourpaint spectacle krunner partitionmanager packagekit-qt5 
-      pacstrap /mnt latte-dock discord filelight htop kruler ksysguard yakuake nano starship neofetch firefox git
+      pacstrap /mnt latte-dock discord filelight htop kruler ksysguard yakuake nano starship neofetch firefox git networkmanager sof-firmware man-db man-pages texinfo 
       pacstrap /mnt noto-fonts-emoji noto-fonts-extra ttf-nerd-fonts-symbols zip unrar arch-install-scripts 
 
    elif [ "$DECHOICE" = "fullplasma" ]; then
