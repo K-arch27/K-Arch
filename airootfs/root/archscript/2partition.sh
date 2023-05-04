@@ -2,9 +2,9 @@
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $SCRIPT_DIR/config.sh
 
-
 mount UUID=${ROOTUUID} /mnt
 
+# Creating subvolumes
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@/.snapshots
 mkdir /mnt/@/.snapshots/1
@@ -14,13 +14,13 @@ btrfs subvolume create /mnt/@/boot/grub
 btrfs subvolume create /mnt/@/root
 btrfs subvolume create /mnt/@/srv
 btrfs subvolume create /mnt/@/tmp
-	
+
+#home will not be included inside snapshot if it's in it's own subvolume
 if [ "$HOMEPART" == "no" ] && [ "$HOMESNAP" == "no" ]; then
    
   btrfs subvolume create /mnt/@/home
    
-fi 
-	
+fi 	
 mkdir /mnt/@/var
 btrfs subvolume create /mnt/@/var/cache
 btrfs subvolume create /mnt/@/var/log
@@ -29,8 +29,12 @@ btrfs subvolume create /mnt/@/var/tmp
 NOW=$(date +"%Y-%m-%d %H:%M:%S")
 sed -i "s|2022-01-01 00:00:00|${NOW}|" /root/archscript/info.xml
 cp /root/archscript/info.xml /mnt/@/.snapshots/1/info.xml
+#setting snapshot 1 as the default subvolume
 btrfs subvolume set-default $(btrfs subvolume list /mnt | grep "@/.snapshots/1/snapshot" | grep -oP '(?<=ID )[0-9]+') /mnt
+
 btrfs quota enable /mnt
+
+#disabling COW for some Var directory
 chattr +C /mnt/@/var/cache
 chattr +C /mnt/@/var/log
 chattr +C /mnt/@/var/spool
