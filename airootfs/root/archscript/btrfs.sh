@@ -202,7 +202,7 @@ function rootpartition() {
     #Executing this script functions
 
     partition_check
-    partitions=$(lsblk -o NAME,SIZE -p -n -l |  awk '{print $1}')
+    partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
     clear
     if [ FIRMWARE_TYPE = "UEFI" ]; then
     lsblk
