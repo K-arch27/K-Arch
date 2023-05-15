@@ -31,6 +31,7 @@ function swappartition() {
     set_option SWAPPART "yes"
         swappartition2
     else
+        set_option SWAPPART "no"
         zenity --info --text="No Swap partition will be used." 2>/dev/null
     fi
 }
