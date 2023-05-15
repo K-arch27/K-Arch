@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# This script will ask users about their prefrences
-# like timezone, keyboard layout,
-# user name, password, etc.
-
 # set up a config file
 CONFIG_FILE=/root/archscript/config.sh
 source /root/archscript/config.sh
@@ -752,6 +748,7 @@ function swappartition() {
 function swappartition2() {
         # Ask user to select Swap partition
         # Create a list of options using available partitions
+        partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
         options=()
         for partition in $partitions; do
             options+=("$partition")
@@ -800,6 +797,7 @@ function homeformat() {
 
 function homepartition2() {
     # Create a list of options using available partitions
+    partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
     options=()
     for partition in $partitions; do
         options+=("$partition")
@@ -847,6 +845,7 @@ function homepartition() {
 
 function efipartition() {
     # Create a list of options using available partitions
+    partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
     options=()
     for partition in $partitions; do
         options+=("$partition")
@@ -865,6 +864,7 @@ function efipartition() {
 
 function rootpartition() {
     # Create a list of options using available partitions
+    partitions=$(lsblk -rno NAME,TYPE,SIZE | awk '$2 == "part" && $1 !~ /^(sr0|loop)/ {split($1,a,""); if (a[length(a)] ~ /[0-9]/) print $1}')
     options=()
     for partition in $partitions; do
         options+=("$partition")
@@ -901,12 +901,9 @@ function pacstartup() {
 
 }
 
-    #Executing this script functions
-    pacstartup&
-    auto_part
-    
-    #Manual partition part if not using auto_part
-    if [ "$autoPart" = "no" ]; then
+function manualpart() {
+
+     if [ "$autoPart" = "no" ]; then
       partition_check
       if [ "$firmtype" = "UEFI" ]; then
         efipartition
@@ -918,7 +915,16 @@ function pacstartup() {
       homepartition
       rootpartition 
     fi
+
+}
+
+    #Executing this script functions
     
+    
+    pacstartup&
+    auto_part
+    #Manual partition part if not using auto_part
+    manualpart
     #User Configs
     keymap 
     userinfo
