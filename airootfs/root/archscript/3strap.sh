@@ -64,9 +64,9 @@ fi
 
 #use command "kde" to start up kaidaplasma :/
 if [ "$DECHOICE" = "kaidaplasma" ]; then
-      pacstrap /mnt  xorg xorg-server xorg-xinit plasma konsole dolphin dolphin-plugins ark kate kcalc kolourpaint spectacle krunner partitionmanager packagekit-qt5 
-      pacstrap /mnt latte-dock discord filelight htop kruler ksysguard yakuake nano exa starship neofetch firefox git networkmanager sof-firmware man-db man-pages texinfo 
-      pacstrap /mnt noto-fonts-emoji noto-fonts-extra ttf-nerd-fonts-symbols zip unrar arch-install-scripts btrfs-assistant
+      pacstrap /mnt xorg xorg-server xorg-xinit plasma dolphin dolphin-plugins alacritty ark kate kcalc kolourpaint spectacle krunner partitionmanager packagekit-qt5 
+      pacstrap /mnt latte-dock discord filelight btop kruler ksysguard steam micro nano exa starship neofetch firefox git networkmanager sof-firmware man-db man-pages texinfo 
+      pacstrap /mnt noto-fonts-emoji noto-fonts-extra ttf-nerd-fonts-symbols zip unrar arch-install-scripts btrfs-assistant sl lolcat thefuck pv progress
 
    elif [ "$DECHOICE" = "fullplasma" ]; then
 
