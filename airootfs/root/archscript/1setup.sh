@@ -459,6 +459,9 @@ else
           fi
    fi
 fi  
+
+partprobe ${selected_device}
+
 }
 
 
@@ -666,8 +669,8 @@ while true; do
         fi
   fi
 done
-
 }
+
 
 
 function userpass () {
@@ -682,6 +685,7 @@ password2=$(zenity --password --text "Please confirm the User password:" --title
   fi
 done
 }
+
 
 
 function rootpass () {
