@@ -64,9 +64,20 @@ for device in $devices; do
     fi
 done
 
-  #choose a device to partition
- selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
- selected_device="/dev/$selected_device"
+ #choose a device to partition
+selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
+selected_device="/dev/$selected_device"
+
+while [ ! -e "$selected_device" ]; do
+  if [ -z "$selected_device" ]; then
+    zenity --error --text="No device selected. Please select a valid device."
+  else
+    zenity --error --text="Invalid device selected. Please select a valid device."
+  fi
+  selected_device=$(zenity --list --title="Select Device" --text="Please select your device:" --column "Devices" "${options[@]}" 2>/dev/null)
+  selected_device="/dev/$selected_device"
+done
+ 
  
  # Check if disk has at least 50GB
  DISK_SIZE=$(blockdev --getsize64 "$selected_device")
