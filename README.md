@@ -35,7 +35,7 @@ To make subvolume not be hardcoded into grub and fstab, so the default subvolume
 
 - Gparted Included for ease of partitionning
 
-- Firefox Included so the user can make some search on the different options
+- Firefox Included if you need to consult the Arch Wiki
 
 - Auto-Installer custom options per user choices (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
 
