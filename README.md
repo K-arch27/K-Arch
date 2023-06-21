@@ -29,11 +29,11 @@ To make subvolume not be hardcoded into grub and fstab, so the default subvolume
 
 - Live Environement Booting Xfce
 
+- Prompt the User If they want to Use the Full Install script with customized options or just the btrfs layout script for manual install
+
 - Installer can partition a device for you (50Gb Min.) Or you can choose to manually make your partitions for the install ( Swap and Home are optionnal )
 
 - Gparted Included for ease of partitionning
-
-- Prompt the User If they want to Use the Install script or just the Tool to make the btrfs layout and make everything ready for a manual install
 
 - Firefox Included so the user can make some search on the different options
 
