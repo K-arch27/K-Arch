@@ -7,7 +7,7 @@
 
 ### -- Build yourself --
 
-1. Install archiso
+1. Install archiso (https://archlinux.org/packages/extra/any/archiso/)
 2. Clone this repo
 3. Use mkarchiso inside the repo to build the iso
 
