@@ -37,7 +37,7 @@ To make subvolume not be hardcoded into grub and fstab, so the default subvolume
 
 - Firefox Included if you need to consult the Arch Wiki
 
-- Auto-Installer custom options per user choices (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper, etc..)  variation of my script found there : https://github.com/K-arch27/archscript
+- Auto-Installer custom options per user choices (Keymap, Locale, Username, Hostname, Kernel, Shell, Graphical Environement, Choice of Repo, Aur Helper)
 
 - Possibility to add package of your choice during install (If pacman find them in the repo)
 
