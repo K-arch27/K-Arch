@@ -29,7 +29,7 @@ To make subvolume not be hardcoded into grub and fstab, so the default subvolume
 
 - Live Environement Booting Xfce
 
-- Installer can partition a device for you (50Gb Min.) Or you can choose already made partitions for the install
+- Installer can partition a device for you (50Gb Min.) Or you can choose to manually make your partitions for the install ( Swap and Home are optionnal )
 
 - Gparted Included for ease of partitionning
 
