@@ -23,7 +23,7 @@
 
 >sed -i 's|,subvolid=258,subvol=/@/.snapshots/1/snapshot| |' /etc/fstab
 
-To make subvolume not be hardcoded into grub and fstab, so the default subvolume is used instead (and can be changed at will)
+To make subvolume are not hardcoded into grub and fstab, so the default subvolume is used instead (and can be changed at will)
 
 ### -- Features --
 
